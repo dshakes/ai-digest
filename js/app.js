@@ -34,6 +34,7 @@ const filters = {
   archiveSort: 'newest',
   resourceCost: 'all',
   resourceLevel: 'all',
+  resourceTopic: 'all',
 };
 
 function sortItems(items, sortBy) {
@@ -122,6 +123,20 @@ async function loadResources() {
   }
 }
 
+const RESOURCE_TOPIC_TAGS = {
+  inference: ['inference', 'serving', 'vllm', 'sglang', 'tensorrt', 'triton', 'batching', 'quantization', 'throughput', 'optimization', 'llama-cpp', 'gpu', 'local-inference', 'local-llm', 'llm-serving'],
+  vllm: ['vllm'],
+  kubernetes: ['kubernetes', 'k8s', 'gke', 'kubeflow', 'kserve', 'cloud-native'],
+  mlops: ['mlops', 'production', 'deployment', 'systems', 'infrastructure', 'pipelines'],
+};
+
+function matchesResourceTopic(resource, topic) {
+  if (topic === 'all') return true;
+  const allowed = RESOURCE_TOPIC_TAGS[topic];
+  if (!allowed) return true;
+  return (resource.tags || []).some(t => allowed.includes(t));
+}
+
 function filterResources() {
   if (!resourcesData) return;
   const filtered = resourcesData.categories.map(cat => ({
@@ -129,6 +144,7 @@ function filterResources() {
     resources: cat.resources.filter(r => {
       if (filters.resourceCost !== 'all' && r.cost !== filters.resourceCost) return false;
       if (filters.resourceLevel !== 'all' && r.level !== filters.resourceLevel) return false;
+      if (!matchesResourceTopic(r, filters.resourceTopic)) return false;
       return true;
     }),
   })).filter(cat => cat.resources.length > 0);
@@ -237,6 +253,19 @@ function setupEventListeners() {
   // Topic filters
   setupTopicFilterListeners('newsTopicFilters', 'news', 'newsTopic');
   setupTopicFilterListeners('releasesTopicFilters', 'releases', 'releasesTopic');
+
+  // Resource topic filters
+  const resourceTopicEl = document.getElementById('resourcesTopicFilters');
+  if (resourceTopicEl) {
+    resourceTopicEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.filter-chip');
+      if (!chip || !chip.dataset.topic) return;
+      filters.resourceTopic = chip.dataset.topic;
+      resourceTopicEl.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      filterResources();
+    });
+  }
 
   // Resource filters
   document.getElementById('resourcesFilters').addEventListener('click', (e) => {

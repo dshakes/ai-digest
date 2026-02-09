@@ -149,6 +149,14 @@
 
     <!-- Resources Panel -->
     <section class="panel" id="panel-resources">
+      <div class="topic-filters" id="resourcesTopicFilters">
+        <span class="source-filters__label">Topics:</span>
+        <button class="filter-chip active" data-topic="all">All</button>
+        <button class="filter-chip filter-chip--inference" data-topic="inference">LLM Inference</button>
+        <button class="filter-chip" data-topic="vllm">vLLM</button>
+        <button class="filter-chip" data-topic="kubernetes">Kubernetes</button>
+        <button class="filter-chip" data-topic="mlops">MLOps</button>
+      </div>
       <div class="resources-filter-bar" id="resourcesFilters">
         <div class="filter-group">
           <span class="filter-group__label">Cost:</span>

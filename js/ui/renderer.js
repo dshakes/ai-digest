@@ -2,10 +2,19 @@ import { createNewsCard, createPaperCard, createReleaseCard, createResourceCard,
 
 const PAGE_SIZE = 10;
 
+// Track load-more buttons by grid ID so we can clean them up
+const loadMoreButtons = {};
+
 function renderGrid(gridId, items, cardFactory) {
   const grid = document.getElementById(gridId);
   if (!grid) return;
   grid.innerHTML = '';
+
+  // Clean up previous load-more button for this grid
+  if (loadMoreButtons[gridId]) {
+    loadMoreButtons[gridId].remove();
+    delete loadMoreButtons[gridId];
+  }
 
   if (items.length === 0) {
     grid.innerHTML = `
@@ -17,24 +26,21 @@ function renderGrid(gridId, items, cardFactory) {
     return;
   }
 
-  // Show first batch
-  let shown = 0;
+  // Show first batch only
+  let shown = Math.min(PAGE_SIZE, items.length);
   const fragment = document.createDocumentFragment();
-  const batch = items.slice(0, PAGE_SIZE);
-  batch.forEach(item => fragment.appendChild(cardFactory(item)));
+  items.slice(0, shown).forEach(item => fragment.appendChild(cardFactory(item)));
   grid.appendChild(fragment);
-  shown = batch.length;
-
-  // Remove existing load-more button if any
-  const existingBtn = grid.parentElement.querySelector('.load-more-btn');
-  if (existingBtn) existingBtn.remove();
 
   // Add Load More button if there are more items
-  if (items.length > PAGE_SIZE) {
+  if (items.length > shown) {
     const btn = document.createElement('button');
     btn.className = 'load-more-btn';
     btn.innerHTML = `<span class="material-icons-outlined">expand_more</span> Load More <span class="load-more-btn__count">(${items.length - shown} remaining)</span>`;
-    grid.parentElement.appendChild(btn);
+
+    // Insert button right after the grid element
+    grid.after(btn);
+    loadMoreButtons[gridId] = btn;
 
     btn.addEventListener('click', () => {
       const nextBatch = items.slice(shown, shown + PAGE_SIZE);
@@ -45,6 +51,7 @@ function renderGrid(gridId, items, cardFactory) {
 
       if (shown >= items.length) {
         btn.remove();
+        delete loadMoreButtons[gridId];
       } else {
         btn.querySelector('.load-more-btn__count').textContent = `(${items.length - shown} remaining)`;
       }
@@ -133,6 +140,14 @@ function getCompanyColor(author) {
   return '#5F6368';
 }
 
+function getCompanyInitials(author) {
+  const name = (author || '').trim();
+  if (!name) return '?';
+  const parts = name.split(/[\s\/]+/).filter(Boolean);
+  if (parts.length <= 1) return name.charAt(0).toUpperCase();
+  return parts.slice(0, 2).map(p => p.charAt(0).toUpperCase()).join('');
+}
+
 function renderHighlightCards(containerId, items, emptyMsg) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -147,6 +162,8 @@ function renderHighlightCards(containerId, items, emptyMsg) {
   items.forEach(item => {
     const category = item.extra?.category || 'model';
     const color = getCompanyColor(item.author);
+    const initials = getCompanyInitials(item.author);
+    const smClass = initials.length > 1 ? ' highlight-card__logo--sm' : '';
     const a = document.createElement('a');
     a.className = `highlight-card highlight-card--${category}`;
     a.style.borderLeftColor = color;
@@ -154,7 +171,10 @@ function renderHighlightCards(containerId, items, emptyMsg) {
     a.target = '_blank';
     a.rel = 'noopener';
     a.innerHTML = `
-      <span class="highlight-card__company" style="color:${color}">${escapeHTML(item.author || '')}</span>
+      <span class="highlight-card__header">
+        <span class="highlight-card__logo${smClass}" style="background:${color}">${escapeHTML(initials)}</span>
+        <span class="highlight-card__company" style="color:${color}">${escapeHTML(item.author || '')}</span>
+      </span>
       <span class="highlight-card__title">${escapeHTML(item.title)}</span>
       <span class="highlight-card__category highlight-card__category--${category}">${category}</span>
       <span class="highlight-card__meta">

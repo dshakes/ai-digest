@@ -370,6 +370,32 @@ a:hover {
 .highlight-card--tool { border-left-color: var(--md-teal-600); }
 .highlight-card--inference { border-left-color: #E65100; }
 
+.highlight-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.highlight-card__logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  font-family: var(--font-display);
+  line-height: 1;
+}
+
+.highlight-card__logo--sm {
+  font-size: 10px;
+  letter-spacing: -0.5px;
+}
+
 .highlight-card__company {
   font-size: 10px;
   font-weight: 700;
@@ -462,14 +488,23 @@ a:hover {
     background: var(--md-grey-50);
   }
 
-  .highlight-card__company {
-    font-size: 9px;
-    min-width: 52px;
-    max-width: 52px;
+  .highlight-card__header {
     flex-shrink: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  }
+
+  .highlight-card__company {
+    display: none;
+  }
+
+  .highlight-card__logo {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+    border-radius: 5px;
+  }
+
+  .highlight-card__logo--sm {
+    font-size: 9px;
   }
 
   .highlight-card__title {

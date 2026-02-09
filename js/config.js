@@ -2,13 +2,13 @@ export const CONFIG = {
   CACHE_TTL: {
     news: 10 * 60 * 1000,
     papers: 30 * 60 * 1000,
-    releases: 15 * 60 * 1000,
+    releases: 5 * 60 * 1000,
     resources: 24 * 60 * 60 * 1000,
   },
   REFRESH_INTERVALS: {
     news: 10 * 60 * 1000,
     papers: 30 * 60 * 1000,
-    releases: 15 * 60 * 1000,
+    releases: 5 * 60 * 1000,
     resources: 60 * 60 * 1000,
   },
   MAX_ITEMS_PER_SOURCE: 20,

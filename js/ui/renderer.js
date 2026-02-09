@@ -107,15 +107,40 @@ export function renderResources(categories) {
 }
 
 export function renderHighlights(releases) {
-  // Only curated major releases (not HN stories)
-  const major = releases.filter(r => r.source === 'major_releases');
+  const byDate = (a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime();
+  const normalize = s => (s || '').toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 30);
 
-  // Sort by date descending, take top 5 most recent
-  const recent = major
-    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    .slice(0, 5);
+  // 1. Curated major releases (highest quality, always prioritized)
+  const curated = releases
+    .filter(r => r.source === 'major_releases')
+    .sort(byDate);
 
-  renderHighlightCards('highlightsWeek', recent, 'No major releases found');
+  // 2. High-engagement HN stories as live dynamic supplements (100+ points)
+  const liveReleases = releases
+    .filter(r => r.source === 'hackernews' && (r.engagement?.score || 0) >= 100)
+    .sort(byDate);
+
+  // Merge: curated first, fill remaining slots with live HN stories
+  const combined = [...curated];
+  const seenTitles = curated.map(c => normalize(c.title));
+  const NON_COMPANY_TAGS = new Set(['AI', 'inference', 'coding-tool', 'image-gen', 'search']);
+
+  for (const item of liveReleases) {
+    if (combined.length >= 5) break;
+    const norm = normalize(item.title);
+    if (seenTitles.some(t => t.includes(norm) || norm.includes(t))) continue;
+    // Use company tag as author for logo display
+    const companyTag = (item.tags || []).find(t => !NON_COMPANY_TAGS.has(t));
+    if (companyTag) item.author = companyTag;
+    if (!item.extra) item.extra = {};
+    if ((item.tags || []).includes('inference')) item.extra.category = 'inference';
+    else if ((item.tags || []).includes('coding-tool')) item.extra.category = 'tool';
+    else item.extra.category = 'model';
+    combined.push(item);
+    seenTitles.push(norm);
+  }
+
+  renderHighlightCards('highlightsWeek', combined.slice(0, 5), 'No major releases found');
 }
 
 const COMPANY_COLORS = {

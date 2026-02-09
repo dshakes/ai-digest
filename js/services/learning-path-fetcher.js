@@ -112,14 +112,25 @@ async function fetchTrending(container, topic) {
     TRENDING_CACHE[topic] = { items: unique, ts: Date.now() };
     renderTrendingLinks(linksEl, unique);
   } catch {
-    linksEl.innerHTML = '<span style="font-size:11px;color:var(--md-grey-400)">Could not load trending</span>';
+    linksEl.innerHTML = `<span style="font-size:11px;color:var(--md-grey-400)">Could not load trending <button class="learning-path__trending-retry" style="background:none;border:none;color:var(--md-primary-600);font-size:11px;cursor:pointer;text-decoration:underline;padding:0;margin-left:4px;">Retry</button></span>`;
+    linksEl.querySelector('.learning-path__trending-retry')?.addEventListener('click', e => {
+      e.stopPropagation();
+      linksEl.dataset.loaded = '';
+      fetchTrending(container, topic);
+    });
   }
+}
+
+function fetchWithTimeout(url, timeoutMs = 5000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
 }
 
 async function fetchHN(query) {
   const weekAgo = Math.floor((Date.now() - 14 * 24 * 60 * 60 * 1000) / 1000);
   const url = `${HN_BASE}?query=${encodeURIComponent(query)}&tags=story&numericFilters=created_at_i>${weekAgo}&hitsPerPage=10`;
-  const res = await fetch(url);
+  const res = await fetchWithTimeout(url);
   if (!res.ok) return [];
   const data = await res.json();
   return (data.hits || [])
@@ -135,8 +146,10 @@ async function fetchHN(query) {
 }
 
 async function fetchDevto(query) {
-  const url = `${DEVTO_BASE}?tag=${encodeURIComponent(query.split('+')[0])}&per_page=5&top=7`;
-  const res = await fetch(url);
+  // Use full topic with spaces for better Dev.to search results
+  const searchTerm = query.replace(/\+/g, ' ').split(/\s+/)[0];
+  const url = `${DEVTO_BASE}?tag=${encodeURIComponent(searchTerm)}&per_page=5&top=7`;
+  const res = await fetchWithTimeout(url);
   if (!res.ok) return [];
   const data = await res.json();
   return (data || [])

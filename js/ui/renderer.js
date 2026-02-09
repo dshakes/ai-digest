@@ -68,25 +68,15 @@ export function renderResources(categories) {
 }
 
 export function renderHighlights(releases) {
-  const now = new Date();
-
-  // Monday-Sunday week: find this week's Monday at 00:00
-  const day = now.getDay(); // 0=Sun, 1=Mon, ...
-  const diffToMonday = day === 0 ? 6 : day - 1;
-  const monday = new Date(now);
-  monday.setDate(now.getDate() - diffToMonday);
-  monday.setHours(0, 0, 0, 0);
-  const mondayMs = monday.getTime();
-
   // Only curated major releases (not HN stories)
   const major = releases.filter(r => r.source === 'major_releases');
 
-  const thisWeek = major
-    .filter(r => new Date(r.publishedAt).getTime() >= mondayMs)
-    .sort((a, b) => (b.engagement?.score || 0) - (a.engagement?.score || 0))
-    .slice(0, 12);
+  // Sort by date descending, take top 5 most recent
+  const recent = major
+    .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+    .slice(0, 5);
 
-  renderHighlightCards('highlightsWeek', thisWeek, 'No major releases this week yet');
+  renderHighlightCards('highlightsWeek', recent, 'No major releases found');
 }
 
 function renderHighlightCards(containerId, items, emptyMsg) {
@@ -102,8 +92,17 @@ function renderHighlightCards(containerId, items, emptyMsg) {
   const fragment = document.createDocumentFragment();
   items.forEach(item => {
     const category = item.extra?.category || 'model';
+    const company = (item.author || '').toLowerCase();
     const a = document.createElement('a');
     a.className = `highlight-card highlight-card--${category}`;
+
+    // Company-colored left border accent
+    if (company.includes('anthropic')) a.style.borderLeftColor = '#7B1FA2';
+    else if (company.includes('openai')) a.style.borderLeftColor = '#2E7D32';
+    else if (company.includes('google')) a.style.borderLeftColor = '#1A73E8';
+    else if (company.includes('meta')) a.style.borderLeftColor = '#1565C0';
+    else if (company.includes('microsoft')) a.style.borderLeftColor = '#0078D4';
+
     a.href = item.url;
     a.target = '_blank';
     a.rel = 'noopener';

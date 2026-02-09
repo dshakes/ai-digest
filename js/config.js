@@ -35,6 +35,7 @@ export const CONFIG = {
   ],
   // AI Atlas — LLM-powered concept search
   ATLAS: {
+    apiKey: '',           // Paste your API key here for ready-to-use Atlas
     provider: 'openai',  // 'openai' or 'anthropic'
     openai: {
       model: 'gpt-4o-mini',

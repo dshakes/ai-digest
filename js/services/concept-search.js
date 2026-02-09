@@ -97,78 +97,27 @@ const ALL_CATEGORIES = [...new Set(CONCEPT_INDEX.map(c => c.cat))].sort();
 
 // ─── Init ───
 export async function initAtlas() {
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    renderSetup();
-  } else {
-    renderSearch();
-  }
+  renderSearch();
 }
 
 // ─── API Key Management ───
-function getApiKey() { return localStorage.getItem(KEY_STORAGE) || ''; }
+function getApiKey() { return localStorage.getItem(KEY_STORAGE) || CONFIG.ATLAS.apiKey || ''; }
 function setApiKey(key) { localStorage.setItem(KEY_STORAGE, key); }
 function getProvider() { return localStorage.getItem(PROVIDER_STORAGE) || CONFIG.ATLAS.provider; }
 function setProvider(p) { localStorage.setItem(PROVIDER_STORAGE, p); }
-
-// ─── Setup Screen (first visit, no API key) ───
-function renderSetup() {
-  const panel = document.getElementById('panel-ai-atlas');
-  if (!panel) return;
-
-  const container = panel.querySelector('.ai-atlas');
-  container.innerHTML = `
-    <div class="ai-atlas__hero">
-      <span class="material-icons-outlined ai-atlas__hero-icon">auto_awesome</span>
-      <h2 class="ai-atlas__hero-title">AI Atlas</h2>
-      <p class="ai-atlas__hero-subtitle">Search any AI concept — get instant, in-depth explanations powered by AI</p>
-    </div>
-    <div class="ai-atlas__setup">
-      <div class="ai-atlas__setup-card">
-        <h3><span class="material-icons-outlined">vpn_key</span> Connect Your AI Provider</h3>
-        <p>AI Atlas uses an LLM to generate real-time, comprehensive explanations for any AI concept. Enter your API key to get started.</p>
-        <div class="ai-atlas__setup-form">
-          <div class="ai-atlas__setup-provider">
-            <label>
-              <input type="radio" name="atlasProvider" value="openai" checked>
-              <span>OpenAI <small>(GPT-4o-mini — fast & affordable)</small></span>
-            </label>
-            <label>
-              <input type="radio" name="atlasProvider" value="anthropic">
-              <span>Anthropic <small>(Claude 3.5 Haiku — fast & capable)</small></span>
-            </label>
-          </div>
-          <div class="ai-atlas__setup-input">
-            <input type="password" id="atlasApiKey" placeholder="Paste your API key here..." autocomplete="off">
-            <button class="ai-atlas__setup-btn" id="atlasSetupBtn">
-              <span class="material-icons-outlined">arrow_forward</span> Connect
-            </button>
-          </div>
-          <small class="ai-atlas__setup-note">Your key is stored locally in your browser and only used to call the AI provider's API directly.</small>
-        </div>
-      </div>
-    </div>
-  `;
-
-  document.getElementById('atlasSetupBtn')?.addEventListener('click', () => {
-    const key = document.getElementById('atlasApiKey')?.value.trim();
-    const provider = document.querySelector('input[name="atlasProvider"]:checked')?.value || 'openai';
-    if (!key) return;
-    setApiKey(key);
-    setProvider(provider);
-    renderSearch();
-  });
-
-  // Enter key support
-  document.getElementById('atlasApiKey')?.addEventListener('keydown', e => {
-    if (e.key === 'Enter') document.getElementById('atlasSetupBtn')?.click();
-  });
-}
 
 // ─── Main Search UI ───
 function renderSearch() {
   const panel = document.getElementById('panel-ai-atlas');
   if (!panel) return;
+
+  const hasKey = !!getApiKey();
+  const keyNotice = hasKey ? '' : `
+    <div class="ai-atlas__key-notice">
+      <span class="material-icons-outlined">vpn_key</span>
+      No API key configured. Click <button class="ai-atlas__key-notice-link" id="atlasInlineSetup">settings</button> to add your OpenAI or Anthropic key.
+    </div>
+  `;
 
   const container = panel.querySelector('.ai-atlas');
   container.innerHTML = `
@@ -181,6 +130,7 @@ function renderSearch() {
         <input type="text" class="ai-atlas__search" id="atlasSearch" placeholder="Search concepts… e.g. MCP, RAG, Transformer, RLHF" autocomplete="off">
         <div class="ai-atlas__autocomplete" id="atlasAutocomplete"></div>
       </div>
+      ${keyNotice}
     </div>
     <div class="ai-atlas__popular" id="atlasPopular">
       <h3 class="ai-atlas__section-title"><span class="material-icons-outlined">explore</span> Explore Concepts</h3>
@@ -188,7 +138,7 @@ function renderSearch() {
       <div class="ai-atlas__chips" id="atlasChips"></div>
     </div>
     <div class="ai-atlas__detail" id="atlasDetail" style="display:none"></div>
-    <button class="ai-atlas__settings-btn" id="atlasSettingsBtn" title="Change API key">
+    <button class="ai-atlas__settings-btn" id="atlasSettingsBtn" title="Change API key or provider">
       <span class="material-icons-outlined">settings</span>
     </button>
   `;
@@ -197,13 +147,71 @@ function renderSearch() {
   renderConceptChips();
   initSearchInput();
 
-  document.getElementById('atlasSettingsBtn')?.addEventListener('click', () => {
-    if (confirm('Reset API key? You will need to re-enter it.')) {
-      localStorage.removeItem(KEY_STORAGE);
-      localStorage.removeItem(PROVIDER_STORAGE);
-      renderSetup();
+  // Auto-focus search on tab switch
+  const observer = new MutationObserver(() => {
+    if (panel.classList.contains('active')) {
+      document.getElementById('atlasSearch')?.focus();
     }
   });
+  observer.observe(panel, { attributes: true, attributeFilter: ['class'] });
+
+  // Settings button — show inline setup dialog
+  const showSettings = () => {
+    const provider = getProvider();
+    const currentKey = getApiKey();
+    const detail = document.getElementById('atlasDetail');
+    const popular = document.getElementById('atlasPopular');
+    if (popular) popular.style.display = 'none';
+    if (detail) {
+      detail.style.display = 'block';
+      detail.innerHTML = `
+        <button class="ai-atlas__back" id="atlasSettingsBack">
+          <span class="material-icons-outlined">arrow_back</span> Back to search
+        </button>
+        <div class="ai-atlas__setup">
+          <div class="ai-atlas__setup-card">
+            <h3><span class="material-icons-outlined">settings</span> AI Atlas Settings</h3>
+            <p>Configure your AI provider and API key for concept explanations.</p>
+            <div class="ai-atlas__setup-form">
+              <div class="ai-atlas__setup-provider">
+                <label>
+                  <input type="radio" name="atlasProvider" value="openai" ${provider === 'openai' ? 'checked' : ''}>
+                  <span>OpenAI <small>(GPT-4o-mini — fast & affordable)</small></span>
+                </label>
+                <label>
+                  <input type="radio" name="atlasProvider" value="anthropic" ${provider === 'anthropic' ? 'checked' : ''}>
+                  <span>Anthropic <small>(Claude 3.5 Haiku — fast & capable)</small></span>
+                </label>
+              </div>
+              <div class="ai-atlas__setup-input">
+                <input type="password" id="atlasApiKey" placeholder="Paste your API key here..." value="${currentKey}" autocomplete="off">
+                <button class="ai-atlas__setup-btn" id="atlasSetupBtn">
+                  <span class="material-icons-outlined">check</span> Save
+                </button>
+              </div>
+              <small class="ai-atlas__setup-note">Your key is stored locally in your browser and only used to call the AI provider's API directly.</small>
+            </div>
+          </div>
+        </div>
+      `;
+      detail.querySelector('#atlasSettingsBack')?.addEventListener('click', () => showPopular());
+      detail.querySelector('#atlasSetupBtn')?.addEventListener('click', () => {
+        const key = document.getElementById('atlasApiKey')?.value.trim();
+        const prov = document.querySelector('input[name="atlasProvider"]:checked')?.value || 'openai';
+        if (key) setApiKey(key);
+        setProvider(prov);
+        showPopular();
+        // Remove key notice if it exists
+        document.querySelector('.ai-atlas__key-notice')?.remove();
+      });
+      detail.querySelector('#atlasApiKey')?.addEventListener('keydown', e => {
+        if (e.key === 'Enter') detail.querySelector('#atlasSetupBtn')?.click();
+      });
+    }
+  };
+
+  document.getElementById('atlasSettingsBtn')?.addEventListener('click', showSettings);
+  document.getElementById('atlasInlineSetup')?.addEventListener('click', showSettings);
 }
 
 // ─── Category Filters ───

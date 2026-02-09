@@ -226,13 +226,13 @@
 /* ===== Filter Chips ===== */
 .filter-chip {
   font-family: var(--font-primary);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
-  color: var(--md-grey-700);
+  color: var(--md-grey-600);
   background: var(--md-surface);
-  border: 1px solid var(--md-grey-300);
+  border: 1px solid var(--md-grey-200);
   border-radius: var(--radius-full);
-  padding: 6px 16px;
+  padding: 5px 14px;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
@@ -240,7 +240,7 @@
 
 .filter-chip:hover {
   background: var(--md-grey-50);
-  border-color: var(--md-grey-400);
+  border-color: var(--md-grey-300);
 }
 
 .filter-chip.active {
@@ -506,8 +506,8 @@
   background: linear-gradient(135deg, var(--md-primary-50) 0%, #F0F4FF 50%, #F5F0FF 100%);
   border: 1px solid var(--md-grey-200);
   border-radius: var(--radius-md);
-  padding: 28px 28px 20px;
-  margin-bottom: 32px;
+  padding: 24px 24px 18px;
+  margin-bottom: 28px;
 }
 
 .learning-path__hero-content {
@@ -557,28 +557,35 @@
   color: var(--md-primary-600);
 }
 
+/* ===== Controls row (between fork and tracks) ===== */
+.learning-path__controls {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 4px 12px;
+}
+
 .learning-path__expand-all {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  margin-left: auto;
-  padding: 5px 14px;
-  font-size: 11px;
+  padding: 4px 2px;
+  font-family: var(--font-primary);
+  font-size: 13px;
   font-weight: 500;
-  color: var(--md-primary-700);
-  background: var(--md-primary-50);
-  border: 1px solid var(--md-primary-100, #C2D9F7);
-  border-radius: var(--radius-full);
+  color: var(--md-primary-600);
+  background: none;
+  border: none;
   cursor: pointer;
-  transition: background 0.15s ease;
+  transition: color 0.15s ease;
 }
 
 .learning-path__expand-all:hover {
-  background: var(--md-primary-100, #C2D9F7);
+  color: var(--md-primary-800);
+  text-decoration: underline;
 }
 
 .learning-path__expand-all .material-icons-outlined {
-  font-size: 16px;
+  font-size: 18px;
 }
 
 /* Section heading */
@@ -1066,7 +1073,7 @@
 }
 
 .learning-path__track-stage.is-expanded .learning-path__trending.is-trending-open {
-  max-height: 400px;
+  max-height: 500px;
 }
 
 .learning-path__trending-toggle {
@@ -1839,6 +1846,38 @@
 
 .ai-atlas__related-chip .material-icons-outlined {
   font-size: 14px;
+}
+
+/* ===== AI Atlas Key Notice (inline, subtle) ===== */
+.ai-atlas__key-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  font-size: 12px;
+  color: var(--md-grey-500);
+}
+
+.ai-atlas__key-notice .material-icons-outlined {
+  font-size: 15px;
+  color: var(--md-grey-400);
+}
+
+.ai-atlas__key-notice-link {
+  background: none;
+  border: none;
+  color: var(--md-primary-600);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+  font-family: var(--font-primary);
+}
+
+.ai-atlas__key-notice-link:hover {
+  color: var(--md-primary-800);
 }
 
 /* ===== AI Atlas Setup Screen ===== */

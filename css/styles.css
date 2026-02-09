@@ -88,8 +88,8 @@ a:hover {
 
 /* App Bar */
 .app-bar {
-  background: var(--md-surface);
-  border-bottom: 1px solid var(--md-grey-200);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  border-bottom: none;
   padding: 0 24px;
   height: 64px;
   display: flex;
@@ -98,6 +98,7 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 2px 12px rgba(15, 52, 96, 0.3);
 }
 
 .app-bar__left {
@@ -107,20 +108,51 @@ a:hover {
 }
 
 .app-bar__logo {
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
+  filter: drop-shadow(0 2px 6px rgba(66, 133, 244, 0.4));
+  transition: transform 0.3s ease;
+}
+
+.app-bar__logo:hover {
+  transform: rotate(-8deg) scale(1.08);
 }
 
 .app-bar__title {
   font-family: var(--font-display);
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--md-grey-900);
-  letter-spacing: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  background: linear-gradient(135deg, #8AB4F8 0%, #669DF6 30%, #AB47BC 70%, #8AB4F8 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: banner-shimmer 4s ease-in-out infinite;
+}
+
+@keyframes banner-shimmer {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
 }
 
 .app-bar__title span {
-  color: var(--md-primary-600);
+  /* Inherits gradient from parent — no separate color needed */
+}
+
+.app-bar__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.app-bar__tagline {
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  margin-top: -2px;
 }
 
 .app-bar__actions {
@@ -131,7 +163,7 @@ a:hover {
 
 .last-updated {
   font-size: 12px;
-  color: var(--md-grey-600);
+  color: rgba(255, 255, 255, 0.6);
   white-space: nowrap;
 }
 
@@ -145,12 +177,13 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--md-grey-700);
-  transition: background 0.2s;
+  color: rgba(255, 255, 255, 0.8);
+  transition: background 0.2s, color 0.2s;
 }
 
 .icon-btn:hover {
-  background: var(--md-grey-100);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
 }
 
 .icon-btn .material-icons-outlined {
@@ -440,7 +473,7 @@ a:hover {
     align-items: center;
     min-width: 0;
     max-width: none;
-    padding: 11px 12px;
+    padding: 12px;
     gap: 10px;
     border-radius: 0;
     box-shadow: none;
@@ -690,7 +723,9 @@ a:hover {
   .nav-sidebar {
     width: 100%;
     height: auto;
-    position: static;
+    position: sticky;
+    top: 64px;
+    z-index: 90;
     flex-direction: row;
     padding: 0 8px;
     border-right: none;
@@ -763,8 +798,8 @@ a:hover {
   }
 
   .app-bar__logo {
-    width: 26px;
-    height: 26px;
+    width: 28px;
+    height: 28px;
   }
 
   .app-bar__left {
@@ -772,16 +807,23 @@ a:hover {
   }
 
   .app-bar__title {
-    font-size: 17px;
+    font-size: 19px;
+    font-weight: 700;
   }
 
   .last-updated {
     display: none;
   }
 
+  .app-bar__tagline {
+    font-size: 8px;
+    letter-spacing: 0.8px;
+  }
+
   /* Navigation (mobile) */
   .nav-sidebar {
     padding: 0 4px;
+    top: 52px;
   }
 
   .nav-item {
@@ -897,7 +939,11 @@ a:hover {
   }
 
   .app-bar__title {
-    font-size: 15px;
+    font-size: 16px;
+  }
+
+  .app-bar__tagline {
+    display: none;
   }
 }
 

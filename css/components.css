@@ -1282,9 +1282,13 @@
 
 /* ===== Learning Path — Mobile ===== */
 @media (max-width: 600px) {
+  .learning-path {
+    padding-bottom: 24px;
+  }
+
   .learning-path__hero {
     padding: 16px 14px 14px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
 
   .learning-path__hero-content {
@@ -1353,15 +1357,29 @@
     font-size: 13px;
   }
 
+  .learning-path__cost {
+    font-size: 9px;
+    padding: 1px 6px;
+  }
+
   .learning-path__fork {
     font-size: 11px;
     padding: 12px 0 4px;
     margin: 8px 0 12px;
   }
 
+  .learning-path__controls {
+    padding: 0 4px 8px;
+  }
+
+  .learning-path__expand-all {
+    font-size: 12px;
+  }
+
   /* Tracks: narrow scroll cards on mobile */
   .learning-path__tracks {
-    grid-template-columns: repeat(3, 82vw);
+    grid-template-columns: repeat(3, 84vw);
+    gap: 10px;
   }
 
   /* Badge compact on mobile */
@@ -1402,6 +1420,15 @@
   .learning-path__track-stage .learning-path__link {
     font-size: 11px;
     padding: 5px 0;
+  }
+
+  .learning-path__trending-toggle {
+    font-size: 9px;
+    padding: 3px 8px;
+  }
+
+  .learning-path__scroll-indicators {
+    padding: 12px 0 0;
   }
 }
 
@@ -2168,9 +2195,68 @@
   .ai-atlas__card-title { font-size: 20px; }
   .ai-atlas__card-summary { font-size: 13px; }
   .ai-atlas__explanation { font-size: 13px; }
+
+  .ai-atlas__settings-btn {
+    bottom: 16px;
+    right: 16px;
+    width: 40px;
+    height: 40px;
+  }
+
+  .ai-atlas__setup-card {
+    padding: 20px;
+  }
+
+  .ai-atlas__back {
+    font-size: 12px;
+    padding: 5px 12px;
+    margin-bottom: 12px;
+  }
+
+  .ai-atlas__section h3 {
+    font-size: 13px;
+  }
+
+  .ai-atlas__ref-link {
+    font-size: 12px;
+    padding: 6px 0;
+  }
+
+  .ai-atlas__key-points li {
+    font-size: 12px;
+    padding: 6px 0 6px 18px;
+  }
 }
 
 @media (max-width: 480px) {
   .ai-atlas__chips { gap: 6px; }
   .ai-atlas__chip { font-size: 11px; padding: 6px 10px; }
+
+  .ai-atlas__hero {
+    padding: 16px 12px 16px;
+  }
+
+  .ai-atlas__search {
+    font-size: 14px;
+    padding: 10px 12px 10px 38px;
+    border-radius: 22px;
+  }
+
+  .ai-atlas__categories {
+    gap: 4px;
+    margin-bottom: 12px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ai-atlas__categories::-webkit-scrollbar { display: none; }
+
+  .ai-atlas__cat-chip {
+    padding: 4px 10px;
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
 }

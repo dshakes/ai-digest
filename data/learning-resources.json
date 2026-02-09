@@ -76,6 +76,24 @@
           "cost": "paid",
           "provider": "DataCamp",
           "tags": ["interactive", "python", "data-science"]
+        },
+        {
+          "title": "MLOps for Production (DeepLearning.AI)",
+          "url": "https://www.coursera.org/learn/introduction-to-machine-learning-in-production",
+          "description": "Andrew Ng's specialization on ML production lifecycle: data pipelines, model deployment, monitoring, and production ML systems.",
+          "level": "intermediate",
+          "cost": "freemium",
+          "provider": "Coursera / DeepLearning.AI",
+          "tags": ["mlops", "production", "deployment"]
+        },
+        {
+          "title": "NVIDIA DLI - LLM Inference & Optimization",
+          "url": "https://learn.nvidia.com/en-us/training/self-paced-courses",
+          "description": "NVIDIA Deep Learning Institute self-paced courses on deploying and optimizing LLM inference with TensorRT-LLM, Triton, and containerized workflows.",
+          "level": "advanced",
+          "cost": "paid",
+          "provider": "NVIDIA",
+          "tags": ["inference", "gpu", "tensorrt", "optimization"]
         }
       ]
     },
@@ -136,6 +154,96 @@
           "cost": "free",
           "provider": "Anthropic",
           "tags": ["claude", "api", "llm"]
+        },
+        {
+          "title": "vLLM Documentation",
+          "url": "https://docs.vllm.ai/en/latest/",
+          "description": "Official vLLM docs covering installation, API reference, supported models, quantization, distributed serving, and deployment guides.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "vLLM",
+          "tags": ["vllm", "inference", "serving"]
+        },
+        {
+          "title": "SGLang Documentation",
+          "url": "https://docs.sglang.io/",
+          "description": "High-performance serving framework with RadixAttention, continuous batching, disaggregated prefill-decode, and speculative decoding.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "SGLang",
+          "tags": ["sglang", "inference", "serving"]
+        },
+        {
+          "title": "Ray Serve LLM Guide",
+          "url": "https://docs.ray.io/en/latest/serve/llm/index.html",
+          "description": "Official Ray docs for serving LLMs with Ray Serve, including multi-model deployment, autoscaling, and vLLM backend integration.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "Anyscale / Ray",
+          "tags": ["ray", "llm-serving", "autoscaling"]
+        },
+        {
+          "title": "KServe Documentation",
+          "url": "https://kserve.github.io/website/",
+          "description": "Kubernetes CRDs for standardized ML model serving with autoscaling, canary deployments, and multi-framework support.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "KServe / Kubeflow",
+          "tags": ["kubernetes", "serving", "mlops"]
+        },
+        {
+          "title": "TensorRT-LLM Quick Start",
+          "url": "https://nvidia.github.io/TensorRT-LLM/quick-start-guide.html",
+          "description": "Step-by-step guide to getting started with NVIDIA TensorRT-LLM for optimized LLM inference on GPUs.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "NVIDIA",
+          "tags": ["tensorrt", "inference", "gpu", "optimization"]
+        },
+        {
+          "title": "NVIDIA Triton Inference Server Guide",
+          "url": "https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/index.html",
+          "description": "Official NVIDIA docs for Triton covering model repository setup, dynamic batching, multi-framework support, and performance analysis.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "NVIDIA",
+          "tags": ["triton", "inference", "gpu", "serving"]
+        },
+        {
+          "title": "llama.cpp Wiki",
+          "url": "https://github.com/ggml-org/llama.cpp/wiki",
+          "description": "Community guides on model conversion, GGUF quantization, performance tuning, and platform-specific tips for running LLMs locally.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "llama.cpp",
+          "tags": ["llama-cpp", "quantization", "local-inference"]
+        },
+        {
+          "title": "Mastering LLM Inference Optimization (NVIDIA)",
+          "url": "https://developer.nvidia.com/blog/mastering-llm-techniques-inference-optimization/",
+          "description": "Comprehensive guide covering continuous batching, KV cache optimization, quantization, speculative decoding, and the full inference optimization stack.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "NVIDIA",
+          "tags": ["inference", "optimization", "batching", "quantization"]
+        },
+        {
+          "title": "BentoML LLM Serving Docs",
+          "url": "https://docs.bentoml.com/",
+          "description": "Docs for BentoML covering LLM serving with vLLM backend, OpenAI-compatible APIs, containerization, and Kubernetes deployment.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "BentoML",
+          "tags": ["bentoml", "llm-serving", "kubernetes"]
+        },
+        {
+          "title": "LLM Optimization on GKE (Google Cloud)",
+          "url": "https://docs.cloud.google.com/kubernetes-engine/docs/best-practices/machine-learning/inference/llm-optimization",
+          "description": "Google's best practices for optimizing LLM inference on Kubernetes Engine covering batching, model parallelism, and autoscaling.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "Google Cloud",
+          "tags": ["kubernetes", "gke", "inference", "optimization"]
         }
       ]
     },
@@ -187,6 +295,33 @@
           "cost": "free",
           "provider": "Stanford",
           "tags": ["nlp", "textbook", "linguistics"]
+        },
+        {
+          "title": "Designing Machine Learning Systems (Chip Huyen)",
+          "url": "https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/",
+          "description": "End-to-end ML systems: data engineering, feature stores, model deployment, monitoring, and iteration. The go-to book for ML infrastructure.",
+          "level": "intermediate",
+          "cost": "paid",
+          "provider": "O'Reilly",
+          "tags": ["mlops", "systems", "production", "infrastructure"]
+        },
+        {
+          "title": "AI Engineering (Chip Huyen)",
+          "url": "https://www.oreilly.com/library/view/ai-engineering/9781098166298/",
+          "description": "Building production apps with foundation models: RAG, fine-tuning, agents, evaluation, and the AI engineering stack.",
+          "level": "advanced",
+          "cost": "paid",
+          "provider": "O'Reilly",
+          "tags": ["ai-engineering", "llm", "rag", "agents"]
+        },
+        {
+          "title": "Distributed Machine Learning Patterns (Yuan Tang)",
+          "url": "https://www.manning.com/books/distributed-machine-learning-patterns",
+          "description": "Design patterns for distributed ML training and serving on Kubernetes, including data parallelism, model parallelism, and serving patterns.",
+          "level": "advanced",
+          "cost": "paid",
+          "provider": "Manning",
+          "tags": ["kubernetes", "distributed", "ml-patterns"]
         }
       ]
     },
@@ -247,6 +382,60 @@
           "cost": "paid",
           "provider": "OpenAI",
           "tags": ["api", "gpt", "llm"]
+        },
+        {
+          "title": "vLLM",
+          "url": "https://vllm.ai/",
+          "description": "High-throughput LLM inference engine using PagedAttention. Supports 100+ models, tensor parallelism, and OpenAI-compatible API.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "vLLM",
+          "tags": ["vllm", "inference", "serving", "open-source"]
+        },
+        {
+          "title": "Ray / Anyscale",
+          "url": "https://www.anyscale.com/",
+          "description": "Managed Ray platform for production LLM serving, training, and batch inference with automatic scaling. Built by the creators of Ray.",
+          "level": "intermediate",
+          "cost": "freemium",
+          "provider": "Anyscale",
+          "tags": ["ray", "serving", "scaling", "mlops"]
+        },
+        {
+          "title": "Kubeflow",
+          "url": "https://www.kubeflow.org/",
+          "description": "Kubernetes-native ML toolkit: notebooks, distributed training, hyperparameter tuning, pipelines, and model serving (KServe).",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "Kubeflow / CNCF",
+          "tags": ["kubernetes", "mlops", "pipelines", "open-source"]
+        },
+        {
+          "title": "BentoML",
+          "url": "https://www.bentoml.com/",
+          "description": "Unified inference platform for deploying AI models. Dynamic batching, model parallelism, OCI containers, and Kubernetes-native deployment.",
+          "level": "intermediate",
+          "cost": "freemium",
+          "provider": "BentoML",
+          "tags": ["serving", "deployment", "kubernetes", "open-source"]
+        },
+        {
+          "title": "Seldon Core",
+          "url": "https://github.com/SeldonIO/seldon-core",
+          "description": "MLOps framework for deploying, managing, and scaling ML/LLM systems on Kubernetes. A/B testing, canary deployments, and drift detection.",
+          "level": "advanced",
+          "cost": "freemium",
+          "provider": "Seldon",
+          "tags": ["kubernetes", "mlops", "serving", "open-source"]
+        },
+        {
+          "title": "OpenLLM by BentoML",
+          "url": "https://github.com/bentoml/OpenLLM",
+          "description": "Open-source platform for running LLMs as OpenAI-compatible API endpoints, with fine-tuning and production deployment support.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "BentoML",
+          "tags": ["llm-serving", "open-source", "api"]
         }
       ]
     },
@@ -289,6 +478,33 @@
           "cost": "free",
           "provider": "Papers With Code",
           "tags": ["research", "papers", "benchmarks"]
+        },
+        {
+          "title": "r/LocalLLaMA",
+          "url": "https://www.reddit.com/r/LocalLLaMA/",
+          "description": "615k+ members discussing local LLM deployment, quantization, inference optimization, model releases, and hardware recommendations.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "Reddit",
+          "tags": ["community", "local-llm", "inference", "quantization"]
+        },
+        {
+          "title": "vLLM GitHub Discussions",
+          "url": "https://github.com/vllm-project/vllm/discussions",
+          "description": "Official Q&A and discussion forum for vLLM. Best place for technical questions, feature requests, and community support.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "vLLM",
+          "tags": ["vllm", "community", "support"]
+        },
+        {
+          "title": "CNCF Cloud Native AI",
+          "url": "https://www.cncf.io/",
+          "description": "Parent organization for Kubernetes and cloud-native AI initiatives. Hosts the Cloud Native AI Working Group for AI/ML on K8s.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "CNCF",
+          "tags": ["kubernetes", "cloud-native", "ai-infra"]
         }
       ]
     },
@@ -340,6 +556,42 @@
           "cost": "freemium",
           "provider": "Sebastian Raschka",
           "tags": ["newsletter", "research", "practical"]
+        },
+        {
+          "title": "vLLM Blog",
+          "url": "https://blog.vllm.ai/",
+          "description": "Deep technical posts on PagedAttention, continuous batching, architecture improvements, new model support, and performance benchmarks.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "vLLM",
+          "tags": ["vllm", "inference", "technical"]
+        },
+        {
+          "title": "Anyscale Blog",
+          "url": "https://www.anyscale.com/blog",
+          "description": "Technical posts on Ray Serve LLM, continuous batching, disaggregated serving, and LLM performance benchmarking.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "Anyscale",
+          "tags": ["ray", "inference", "serving", "benchmarks"]
+        },
+        {
+          "title": "Chip Huyen's Blog",
+          "url": "https://huyenchip.com/blog/",
+          "description": "ML systems in production, generative AI platform design, AI agents, and MLOps. Thorough, data-driven, and widely cited.",
+          "level": "intermediate",
+          "cost": "free",
+          "provider": "Chip Huyen",
+          "tags": ["mlops", "systems", "production", "blog"]
+        },
+        {
+          "title": "Continuous Batching Explained (Anyscale)",
+          "url": "https://www.anyscale.com/blog/continuous-batching-llm-inference",
+          "description": "Landmark post explaining how continuous batching achieves 23x throughput for LLM inference. Essential reading for inference engineers.",
+          "level": "advanced",
+          "cost": "free",
+          "provider": "Anyscale",
+          "tags": ["inference", "batching", "throughput", "deep-dive"]
         }
       ]
     }

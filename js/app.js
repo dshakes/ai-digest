@@ -283,6 +283,10 @@ async function init() {
       interval: CONFIG.REFRESH_INTERVALS.papers,
       callback: async () => { await loadPapers(); buildArchive(); updateTimestamp(); },
     },
+    resources: {
+      interval: CONFIG.REFRESH_INTERVALS.resources,
+      callback: async () => { await loadResources(); updateTimestamp(); },
+    },
   });
 }
 

@@ -9,6 +9,7 @@ export const CONFIG = {
     news: 10 * 60 * 1000,
     papers: 30 * 60 * 1000,
     releases: 15 * 60 * 1000,
+    resources: 60 * 60 * 1000,
   },
   MAX_ITEMS_PER_SOURCE: 20,
   SEARCH_QUERIES: {

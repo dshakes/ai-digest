@@ -3,7 +3,7 @@
   "releases": [
     {
       "title": "Claude Opus 4.6 Released",
-      "url": "https://www.anthropic.com/news",
+      "url": "https://www.anthropic.com/news/claude-opus-4-6",
       "description": "Anthropic's most capable model yet. Opus 4.6 delivers major improvements in reasoning, coding, and multi-step tasks. Available via API and Claude.ai.",
       "company": "Anthropic",
       "category": "model",
@@ -21,7 +21,7 @@
     },
     {
       "title": "Claude Sonnet 4.5 Released",
-      "url": "https://www.anthropic.com/news",
+      "url": "https://www.anthropic.com/news/claude-sonnet-4-5",
       "description": "Anthropic's Sonnet 4.5 brings hybrid extended thinking, improved coding, and better agentic tool use at a balanced cost-performance point.",
       "company": "Anthropic",
       "category": "model",
@@ -66,7 +66,7 @@
     },
     {
       "title": "Gemini 2.5 Flash Released",
-      "url": "https://blog.google/technology/google-deepmind/gemini-2-5-flash/",
+      "url": "https://blog.google/products/gemini/gemini-2-5-flash-preview/",
       "description": "Google's fastest thinking model. Excellent performance-to-cost ratio with native tool use and thinking capabilities.",
       "company": "Google",
       "category": "model",
@@ -75,7 +75,7 @@
     },
     {
       "title": "Kimi k1.5 -- Moonshot AI Reasoning Model",
-      "url": "https://kimi.moonshot.cn/",
+      "url": "https://arxiv.org/abs/2501.12599",
       "description": "Moonshot AI's reasoning model rivaling o1 on math and coding benchmarks. Uses reinforcement learning for long-form chain-of-thought reasoning.",
       "company": "Moonshot AI",
       "category": "model",
@@ -102,7 +102,7 @@
     },
     {
       "title": "Mistral Large 2 Released",
-      "url": "https://mistral.ai/news/mistral-large-2/",
+      "url": "https://mistral.ai/news/mistral-large-2407",
       "description": "Mistral's 123B parameter flagship model. Strong coding, math, and multilingual capabilities with 128k context window.",
       "company": "Mistral AI",
       "category": "model",
@@ -138,7 +138,7 @@
     },
     {
       "title": "GitHub Copilot Agent Mode",
-      "url": "https://github.blog/changelog/2025-02-07-github-copilot-agent-mode-in-vs-code-preview/",
+      "url": "https://github.blog/changelog/2025-02-06-next-edit-suggestions-agent-mode-and-prompts-files-for-github-copilot-in-vs-code-january-release-v0-24/",
       "description": "GitHub Copilot gains autonomous agent capabilities. Can plan, execute multi-step tasks, run terminal commands, and iterate on code.",
       "company": "GitHub / Microsoft",
       "category": "tool",
@@ -165,7 +165,7 @@
     },
     {
       "title": "Perplexity Sonar -- Real-Time AI Search",
-      "url": "https://www.perplexity.ai/",
+      "url": "https://www.perplexity.ai/hub/blog/meet-new-sonar",
       "description": "AI-powered search engine providing cited, real-time answers. Sonar API enables developers to build search-augmented AI applications.",
       "company": "Perplexity",
       "category": "tool",
@@ -192,7 +192,7 @@
     },
     {
       "title": "Microsoft Phi-4 Released",
-      "url": "https://azure.microsoft.com/en-us/blog/empowering-innovation-the-latest-phi-4-small-language-models/",
+      "url": "https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/introducing-phi-4-microsoft%E2%80%99s-newest-small-language-model-specializing-in-comple/4357090",
       "description": "Microsoft's small language model (14B params) that punches above its weight. Excels at reasoning and STEM tasks, rivaling much larger models.",
       "company": "Microsoft",
       "category": "model",
@@ -219,7 +219,7 @@
     },
     {
       "title": "Replit Agent -- Build Full Apps with AI",
-      "url": "https://replit.com/ai",
+      "url": "https://blog.replit.com/introducing-replit-agent",
       "description": "Replit's autonomous AI agent builds and deploys full-stack applications from natural language descriptions.",
       "company": "Replit",
       "category": "tool",
@@ -228,7 +228,7 @@
     },
     {
       "title": "vLLM 0.7 -- High-Throughput LLM Serving",
-      "url": "https://blog.vllm.ai/2025/01/27/v0.7.0.html",
+      "url": "https://github.com/vllm-project/vllm/releases/tag/v0.7.0",
       "description": "Major vLLM release with V1 architecture: 1.7x throughput improvement, disaggregated prefill, multi-node tensor parallelism, and improved prefix caching.",
       "company": "vLLM",
       "category": "inference",

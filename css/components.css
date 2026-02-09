@@ -615,7 +615,8 @@
   content: '';
   flex: 1;
   width: 2px;
-  background: var(--md-grey-200);
+  background: linear-gradient(180deg, #34A853 0%, #1E8E3E 100%);
+  opacity: 0.4;
 }
 
 /* Node circle */
@@ -629,17 +630,16 @@
   color: #fff;
   flex-shrink: 0;
   z-index: 2;
+  box-shadow: 0 2px 8px rgba(52, 168, 83, 0.3);
 }
 
 .learning-path__node .material-icons-outlined {
   font-size: 20px;
 }
 
-/* Stage node colors — all green for foundation */
+/* Stage node colors — green for foundation */
 .learning-path__stage--1 .learning-path__node { background: #34A853; }
-.learning-path__stage--2 .learning-path__node { background: #2E9A4D; }
-.learning-path__stage--3 .learning-path__node { background: #1E8E3E; }
-.learning-path__stage--4 .learning-path__node { background: #188038; }
+.learning-path__stage--2 .learning-path__node { background: #1E8E3E; }
 
 /* Card */
 .learning-path__card {
@@ -658,11 +658,9 @@
   transform: translateY(-1px);
 }
 
-/* Card left-border accent colors — all green for foundation */
+/* Card left-border accent colors — green for foundation */
 .learning-path__stage--1 .learning-path__card { border-left-color: #34A853; }
-.learning-path__stage--2 .learning-path__card { border-left-color: #2E9A4D; }
-.learning-path__stage--3 .learning-path__card { border-left-color: #1E8E3E; }
-.learning-path__stage--4 .learning-path__card { border-left-color: #188038; }
+.learning-path__stage--2 .learning-path__card { border-left-color: #1E8E3E; }
 
 .learning-path__card-header {
   margin-bottom: 8px;
@@ -731,7 +729,7 @@
   color: var(--md-primary-700);
   text-decoration: none;
   border-bottom: 1px solid var(--md-grey-100);
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, padding-left 0.15s ease;
 }
 
 .learning-path__link:last-child {
@@ -741,6 +739,7 @@
 .learning-path__link:hover {
   color: var(--md-primary-800);
   text-decoration: none;
+  padding-left: 4px;
 }
 
 .learning-path__link .material-icons-outlined {
@@ -794,35 +793,37 @@
   color: var(--md-primary-600);
 }
 
-/* ===== Connector Lines (fork visual) ===== */
+/* ===== Track Grid with Connector Lines ===== */
 .learning-path__tracks {
   position: relative;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
-  padding-top: 24px;
+  padding-top: 32px;
 }
 
+/* Fork connector: ⌐ bracket spanning all 3 columns */
 .learning-path__tracks::before {
   content: '';
   position: absolute;
   top: 0;
   left: 16.66%;
   right: 16.66%;
-  height: 24px;
+  height: 28px;
   border-left: 2px solid var(--md-grey-300);
   border-right: 2px solid var(--md-grey-300);
   border-top: 2px solid var(--md-grey-300);
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 }
 
+/* Center connector line */
 .learning-path__tracks::after {
   content: '';
   position: absolute;
   top: 0;
   left: 50%;
   width: 2px;
-  height: 24px;
+  height: 28px;
   background: var(--md-grey-300);
   transform: translateX(-1px);
 }
@@ -834,6 +835,11 @@
   box-shadow: var(--elevation-1);
   border-top: 4px solid transparent;
   overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+.learning-path__track:hover {
+  box-shadow: var(--elevation-2);
 }
 
 .learning-path__track--blue  { border-top-color: #1A73E8; }
@@ -844,23 +850,48 @@
 .learning-path__track-header {
   padding: 20px 20px 16px;
   border-bottom: 1px solid var(--md-grey-100);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
 }
 
-.learning-path__track-icon {
-  font-size: 28px;
-  margin-bottom: 8px;
+/* Track badge — colored circle with icon */
+.learning-path__track-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
 }
 
-.learning-path__track--blue .learning-path__track-icon  { color: #1A73E8; }
-.learning-path__track--orange .learning-path__track-icon { color: #E65100; }
-.learning-path__track--purple .learning-path__track-icon { color: #7B1FA2; }
+.learning-path__track-badge .material-icons-outlined {
+  font-size: 22px;
+}
+
+.learning-path__track--blue .learning-path__track-badge {
+  background: linear-gradient(135deg, #1A73E8, #4285F4);
+  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+}
+
+.learning-path__track--orange .learning-path__track-badge {
+  background: linear-gradient(135deg, #E65100, #FF8F00);
+  box-shadow: 0 2px 8px rgba(230, 81, 0, 0.3);
+}
+
+.learning-path__track--purple .learning-path__track-badge {
+  background: linear-gradient(135deg, #7B1FA2, #AB47BC);
+  box-shadow: 0 2px 8px rgba(123, 31, 162, 0.3);
+}
 
 .learning-path__track-title {
   font-family: var(--font-display);
   font-size: 17px;
   font-weight: 500;
   color: var(--md-grey-900);
-  margin-bottom: 4px;
 }
 
 .learning-path__track-desc {
@@ -910,7 +941,34 @@
   font-size: 14px;
 }
 
-/* ===== Learning Path — Tablet (600-899px) ===== */
+/* ===== Learning Path — iPad Landscape / Small Desktop (900-1023px) ===== */
+@media (min-width: 900px) and (max-width: 1023px) {
+  .learning-path__tracks {
+    gap: 12px;
+  }
+
+  .learning-path__track-header {
+    padding: 16px 14px 12px;
+  }
+
+  .learning-path__track-stage {
+    padding: 12px 14px;
+  }
+
+  .learning-path__track-title {
+    font-size: 15px;
+  }
+
+  .learning-path__track-stage-title {
+    font-size: 13px;
+  }
+
+  .learning-path__track-stage .learning-path__link {
+    font-size: 11px;
+  }
+}
+
+/* ===== Learning Path — Tablet / iPad Portrait (600-899px) ===== */
 @media (max-width: 899px) {
   .learning-path__tracks {
     grid-template-columns: 1fr;
@@ -920,6 +978,16 @@
 
   .learning-path__tracks::before,
   .learning-path__tracks::after {
+    display: none;
+  }
+
+  .learning-path__track-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .learning-path__track-desc {
     display: none;
   }
 }
@@ -993,8 +1061,28 @@
     margin: 8px 0 16px;
   }
 
+  .learning-path__track-badge {
+    width: 36px;
+    height: 36px;
+  }
+
+  .learning-path__track-badge .material-icons-outlined {
+    font-size: 18px;
+  }
+
   .learning-path__track-header {
-    padding: 16px 14px 12px;
+    padding: 14px 14px 10px;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .learning-path__track-title {
+    font-size: 15px;
+  }
+
+  .learning-path__track-desc {
+    display: none;
   }
 
   .learning-path__track-stage {
@@ -1003,5 +1091,10 @@
 
   .learning-path__track-stage-title {
     font-size: 13px;
+  }
+
+  .learning-path__track-stage .learning-path__link {
+    font-size: 11px;
+    padding: 6px 0;
   }
 }

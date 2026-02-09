@@ -2,7 +2,7 @@
 
 **Navigate the AI Universe** — Your all-in-one AI intelligence hub with curated news, multi-track learning paths, research papers, and an AI-powered concept encyclopedia.
 
-**Live:** [dshakes.github.io/ai-digest](https://dshakes.github.io/ai-digest/)
+**Live:** [dshakes.github.io/zettanaut](https://dshakes.github.io/zettanaut/)
 
 ## What It Does
 

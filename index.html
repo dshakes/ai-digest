@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Digest - Your AI News Hub</title>
-  <meta name="description" content="Stay updated with the latest AI news, research papers, and learning resources, intelligently ranked by popularity and importance.">
+  <title>Zettanaut — Navigate the AI Universe</title>
+  <meta name="description" content="Your AI intelligence hub — curated news, learning paths, research papers, and an AI-powered concept encyclopedia, all in one place.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,7 @@
   <header class="app-bar">
     <div class="app-bar__left">
       <img src="assets/favicon.svg" alt="" class="app-bar__logo">
-      <h1 class="app-bar__title">AI <span>Digest</span></h1>
+      <h1 class="app-bar__title">Zetta<span>naut</span></h1>
     </div>
     <div class="app-bar__actions">
       <span class="last-updated" id="lastUpdated"></span>
@@ -68,6 +68,10 @@
       <span class="material-icons-outlined">route</span>
       AI Engineer
     </button>
+    <button class="tab" data-tab="ai-atlas">
+      <span class="material-icons-outlined">auto_awesome</span>
+      AI Atlas
+    </button>
     <button class="tab" data-tab="archive">
       <span class="material-icons-outlined">inventory_2</span>
       Archive
@@ -79,6 +83,10 @@
   <main class="content" id="content">
     <!-- News Panel -->
     <section class="panel active" id="panel-news">
+      <div class="panel-brief">
+        <span class="material-icons-outlined">newspaper</span>
+        <p>Curated AI news from Hacker News, Reddit, Dev.to and more — ranked by relevance and engagement.</p>
+      </div>
       <div class="panel-toolbar">
         <div class="search-bar">
           <span class="material-icons-outlined">search</span>
@@ -106,6 +114,10 @@
 
     <!-- Releases Panel -->
     <section class="panel" id="panel-releases">
+      <div class="panel-brief">
+        <span class="material-icons-outlined">rocket_launch</span>
+        <p>Latest model launches, framework updates, and tool releases from major AI labs and open-source projects.</p>
+      </div>
       <div class="panel-toolbar">
         <div class="search-bar">
           <span class="material-icons-outlined">search</span>
@@ -133,6 +145,10 @@
 
     <!-- Papers Panel -->
     <section class="panel" id="panel-papers">
+      <div class="panel-brief">
+        <span class="material-icons-outlined">science</span>
+        <p>Trending research papers from arXiv and Semantic Scholar — discover breakthroughs in AI and ML.</p>
+      </div>
       <div class="panel-toolbar">
         <div class="search-bar">
           <span class="material-icons-outlined">search</span>
@@ -153,6 +169,10 @@
 
     <!-- Resources Panel -->
     <section class="panel" id="panel-resources">
+      <div class="panel-brief">
+        <span class="material-icons-outlined">school</span>
+        <p>Hand-picked courses, tutorials, and tools — filter by topic, cost, and skill level to find what fits you.</p>
+      </div>
       <div class="topic-filters" id="resourcesTopicFilters">
         <span class="source-filters__label">Topics:</span>
         <button class="filter-chip active" data-topic="all">All</button>
@@ -203,6 +223,9 @@
             <span class="learning-path__hero-stat">
               <span class="material-icons-outlined">fork_right</span> 3 tracks
             </span>
+            <button class="learning-path__expand-all" id="expandAllStages">
+              <span class="material-icons-outlined">unfold_more</span> Expand All
+            </button>
           </div>
         </div>
 
@@ -716,8 +739,21 @@
       </div>
     </section>
 
+    <!-- AI Atlas Panel (dynamically built by concept-search.js) -->
+    <section class="panel" id="panel-ai-atlas">
+      <div class="panel-brief">
+        <span class="material-icons-outlined">auto_awesome</span>
+        <p>AI-powered concept encyclopedia — search any AI term and get instant, comprehensive explanations with references.</p>
+      </div>
+      <div class="ai-atlas"></div>
+    </section>
+
     <!-- Archive Panel -->
     <section class="panel" id="panel-archive">
+      <div class="panel-brief">
+        <span class="material-icons-outlined">inventory_2</span>
+        <p>Browse the full history of past news, releases, and papers — nothing gets lost.</p>
+      </div>
       <div class="panel-toolbar">
         <div class="search-bar">
           <span class="material-icons-outlined">search</span>
@@ -743,7 +779,9 @@
   <script type="module" src="js/app.js"></script>
   <script type="module">
     import { initLearningPath } from './js/services/learning-path-fetcher.js';
+    import { initAtlas } from './js/services/concept-search.js';
     initLearningPath();
+    initAtlas();
   </script>
 </body>
 </html>

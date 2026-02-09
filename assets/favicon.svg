@@ -2,9 +2,10 @@
   <defs>
     <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#4285F4"/>
+      <stop offset="50%" stop-color="#7B1FA2"/>
       <stop offset="100%" stop-color="#1A73E8"/>
     </linearGradient>
   </defs>
   <rect width="48" height="48" rx="12" fill="url(#g)"/>
-  <text x="24" y="33" text-anchor="middle" font-family="Google Sans, Roboto, sans-serif" font-size="24" font-weight="500" fill="white">AI</text>
+  <text x="24" y="34" text-anchor="middle" font-family="Google Sans, Roboto, sans-serif" font-size="26" font-weight="700" fill="white">Z</text>
 </svg>

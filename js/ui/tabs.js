@@ -18,7 +18,7 @@ export function initTabs() {
 
   // Restore from hash
   const hash = location.hash.slice(1);
-  if (['news', 'releases', 'papers', 'resources', 'ai-engineer', 'archive'].includes(hash)) {
+  if (['news', 'releases', 'papers', 'resources', 'ai-engineer', 'ai-atlas', 'archive'].includes(hash)) {
     activate(hash);
   }
 }

@@ -251,6 +251,31 @@ a:hover {
   display: block;
 }
 
+/* ===== Panel Brief (tab description) ===== */
+.panel-brief {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+  background: var(--md-primary-50);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--md-primary-300);
+}
+
+.panel-brief .material-icons-outlined {
+  font-size: 20px;
+  color: var(--md-primary-600);
+  flex-shrink: 0;
+}
+
+.panel-brief p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--md-grey-700);
+  line-height: 1.5;
+}
+
 /* ===== Highlights Banner ===== */
 .highlights {
   background: linear-gradient(135deg, var(--md-primary-50) 0%, #F0F4FF 50%, #F5F0FF 100%);

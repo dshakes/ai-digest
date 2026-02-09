@@ -33,6 +33,19 @@ export const CONFIG = {
     { name: 'allorigins', buildUrl: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}` },
     { name: 'corsproxy', buildUrl: (url) => `https://corsproxy.io/?url=${encodeURIComponent(url)}` },
   ],
+  // AI Atlas — LLM-powered concept search
+  ATLAS: {
+    provider: 'openai',  // 'openai' or 'anthropic'
+    openai: {
+      model: 'gpt-4o-mini',
+      url: 'https://api.openai.com/v1/chat/completions',
+    },
+    anthropic: {
+      model: 'claude-3-5-haiku-20241022',
+      url: 'https://api.anthropic.com/v1/messages',
+    },
+    cacheTTL: 24 * 60 * 60 * 1000,  // 24h
+  },
   RSS_FEEDS: [
     // Company blogs
     { name: 'Anthropic', url: 'https://www.anthropic.com/feed.xml', authority: 1.0 },

@@ -7,8 +7,23 @@ const TRENDING_TTL = 30 * 60 * 1000; // 30 min
 
 export function initLearningPath() {
   initCollapsibleStages();
+  initExpandCollapseAll();
   initMobileScrollIndicator();
   initTrendingToggles();
+}
+
+// ─── Expand / Collapse All toggle ───
+function initExpandCollapseAll() {
+  const btn = document.getElementById('expandAllStages');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const stages = document.querySelectorAll('.learning-path__track-stage');
+    const allExpanded = [...stages].every(s => s.classList.contains('is-expanded'));
+    stages.forEach(s => s.classList.toggle('is-expanded', !allExpanded));
+    btn.innerHTML = allExpanded
+      ? '<span class="material-icons-outlined">unfold_more</span> Expand All'
+      : '<span class="material-icons-outlined">unfold_less</span> Collapse All';
+  });
 }
 
 // ─── Collapsible stages — click header/title to expand/collapse ───

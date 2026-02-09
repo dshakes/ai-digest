@@ -43,44 +43,46 @@
     </div>
   </section>
 
-  <!-- Tab Bar -->
-  <nav class="tab-bar" id="tabBar">
-    <button class="tab active" data-tab="news">
-      <span class="material-icons-outlined">newspaper</span>
-      News
-      <span class="badge" id="newsCount"></span>
-    </button>
-    <button class="tab" data-tab="releases">
-      <span class="material-icons-outlined">rocket_launch</span>
-      Releases
-      <span class="badge" id="releasesCount"></span>
-    </button>
-    <button class="tab" data-tab="papers">
-      <span class="material-icons-outlined">science</span>
-      Papers
-      <span class="badge" id="papersCount"></span>
-    </button>
-    <button class="tab" data-tab="resources">
-      <span class="material-icons-outlined">school</span>
-      Resources
-    </button>
-    <button class="tab" data-tab="ai-engineer">
-      <span class="material-icons-outlined">route</span>
-      AI Engineer
-    </button>
-    <button class="tab" data-tab="ai-atlas">
-      <span class="material-icons-outlined">auto_awesome</span>
-      AI Atlas
-    </button>
-    <button class="tab" data-tab="archive">
-      <span class="material-icons-outlined">inventory_2</span>
-      Archive
-      <span class="badge" id="archiveCount"></span>
-    </button>
-  </nav>
+  <!-- Layout wrapper for sidebar + content -->
+  <div class="app-layout">
+    <!-- Sidebar Navigation (desktop) / Tab Bar (mobile) -->
+    <nav class="nav-sidebar" id="tabBar">
+      <button class="nav-item active" data-tab="news">
+        <span class="material-icons-outlined">newspaper</span>
+        <span class="nav-item__label">News</span>
+        <span class="badge" id="newsCount"></span>
+      </button>
+      <button class="nav-item" data-tab="releases">
+        <span class="material-icons-outlined">rocket_launch</span>
+        <span class="nav-item__label">Releases</span>
+        <span class="badge" id="releasesCount"></span>
+      </button>
+      <button class="nav-item" data-tab="papers">
+        <span class="material-icons-outlined">science</span>
+        <span class="nav-item__label">Papers</span>
+        <span class="badge" id="papersCount"></span>
+      </button>
+      <button class="nav-item" data-tab="resources">
+        <span class="material-icons-outlined">school</span>
+        <span class="nav-item__label">Resources</span>
+      </button>
+      <button class="nav-item" data-tab="ai-engineer">
+        <span class="material-icons-outlined">route</span>
+        <span class="nav-item__label">AI Engineer</span>
+      </button>
+      <button class="nav-item" data-tab="ai-atlas">
+        <span class="material-icons-outlined">auto_awesome</span>
+        <span class="nav-item__label">AI Atlas</span>
+      </button>
+      <button class="nav-item" data-tab="archive">
+        <span class="material-icons-outlined">inventory_2</span>
+        <span class="nav-item__label">Archive</span>
+        <span class="badge" id="archiveCount"></span>
+      </button>
+    </nav>
 
-  <!-- Content -->
-  <main class="content" id="content">
+    <!-- Content -->
+    <main class="content" id="content">
     <!-- News Panel -->
     <section class="panel active" id="panel-news">
       <div class="panel-brief">
@@ -776,6 +778,7 @@
       <div class="card-grid" id="archiveGrid"></div>
     </section>
   </main>
+  </div><!-- /.app-layout -->
 
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>

@@ -79,6 +79,28 @@ export function renderHighlights(releases) {
   renderHighlightCards('highlightsWeek', recent, 'No major releases found');
 }
 
+const COMPANY_COLORS = {
+  anthropic: '#7B1FA2',
+  openai: '#2E7D32',
+  google: '#1A73E8',
+  meta: '#1565C0',
+  microsoft: '#0078D4',
+  'github / microsoft': '#0078D4',
+  deepseek: '#4A6CF7',
+  'xai': '#1DA1F2',
+  nvidia: '#76B900',
+  vllm: '#E65100',
+  sglang: '#E65100',
+};
+
+function getCompanyColor(author) {
+  const key = (author || '').toLowerCase();
+  for (const [name, color] of Object.entries(COMPANY_COLORS)) {
+    if (key.includes(name)) return color;
+  }
+  return '#5F6368';
+}
+
 function renderHighlightCards(containerId, items, emptyMsg) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -92,22 +114,15 @@ function renderHighlightCards(containerId, items, emptyMsg) {
   const fragment = document.createDocumentFragment();
   items.forEach(item => {
     const category = item.extra?.category || 'model';
-    const company = (item.author || '').toLowerCase();
+    const color = getCompanyColor(item.author);
     const a = document.createElement('a');
     a.className = `highlight-card highlight-card--${category}`;
-
-    // Company-colored left border accent
-    if (company.includes('anthropic')) a.style.borderLeftColor = '#7B1FA2';
-    else if (company.includes('openai')) a.style.borderLeftColor = '#2E7D32';
-    else if (company.includes('google')) a.style.borderLeftColor = '#1A73E8';
-    else if (company.includes('meta')) a.style.borderLeftColor = '#1565C0';
-    else if (company.includes('microsoft')) a.style.borderLeftColor = '#0078D4';
-
+    a.style.borderLeftColor = color;
     a.href = item.url;
     a.target = '_blank';
     a.rel = 'noopener';
     a.innerHTML = `
-      <span class="highlight-card__company">${escapeHTML(item.author || '')}</span>
+      <span class="highlight-card__company" style="color:${color}">${escapeHTML(item.author || '')}</span>
       <span class="highlight-card__title">${escapeHTML(item.title)}</span>
       <span class="highlight-card__category highlight-card__category--${category}">${category}</span>
       <span class="highlight-card__meta">

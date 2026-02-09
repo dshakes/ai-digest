@@ -79,12 +79,12 @@ async function fetchTrending(container, topic) {
 
   linksEl.innerHTML = '<div class="learning-path__trending-loader">Loading trending resources…</div>';
 
-  const keywords = topic.split(/\s+/).join('+');
+  const searchQuery = getSearchQuery(topic);
 
   try {
     const [hnItems, devtoItems] = await Promise.allSettled([
-      fetchHN(keywords),
-      fetchDevto(keywords),
+      fetchHN(searchQuery),
+      fetchDevto(searchQuery),
     ]);
 
     const hn = hnItems.status === 'fulfilled' ? hnItems.value : [];
@@ -127,9 +127,36 @@ function fetchWithTimeout(url, timeoutMs = 5000) {
   return fetch(url, { signal: controller.signal }).finally(() => clearTimeout(timer));
 }
 
+// Better search keyword mapping for topics that don't search well raw
+const TOPIC_SEARCH_HINTS = {
+  'deep learning CNN RNN': 'deep learning',
+  'NLP transformers attention': 'transformer',
+  'LLM fine-tuning GPT': 'LLM fine-tuning',
+  'AI agents autonomous agentic': 'AI agents',
+  'computer vision multimodal': 'multimodal AI',
+  'reinforcement learning RLHF': 'RLHF',
+  'MLOps deployment CI/CD': 'MLOps',
+  'LLM inference serving vLLM': 'LLM inference',
+  'MCP agent infrastructure gateway': 'MCP protocol',
+  'guardrails observability monitoring': 'AI guardrails',
+  'quantization GPU optimization inference': 'quantization LLM',
+  'distributed training scaling FSDP': 'distributed training',
+  'prompt engineering LLM API': 'prompt engineering',
+  'RAG vector database embeddings': 'RAG retrieval',
+  'AI agents LangChain MCP A2A': 'AI agents LangChain',
+  'production AI apps deployment': 'AI production deployment',
+  'LLM evaluation testing benchmarks': 'LLM evaluation',
+  'full stack AI advanced patterns': 'AI engineering',
+};
+
+function getSearchQuery(topic) {
+  return TOPIC_SEARCH_HINTS[topic] || topic.split(/\s+/).slice(0, 2).join(' ');
+}
+
 async function fetchHN(query) {
-  const weekAgo = Math.floor((Date.now() - 14 * 24 * 60 * 60 * 1000) / 1000);
-  const url = `${HN_BASE}?query=${encodeURIComponent(query)}&tags=story&numericFilters=created_at_i>${weekAgo}&hitsPerPage=10`;
+  // Use 30-day window for broader results
+  const monthAgo = Math.floor((Date.now() - 30 * 24 * 60 * 60 * 1000) / 1000);
+  const url = `${HN_BASE}?query=${encodeURIComponent(query)}&tags=story&numericFilters=created_at_i>${monthAgo}&hitsPerPage=10`;
   const res = await fetchWithTimeout(url);
   if (!res.ok) return [];
   const data = await res.json();
@@ -146,9 +173,30 @@ async function fetchHN(query) {
 }
 
 async function fetchDevto(query) {
-  // Use full topic with spaces for better Dev.to search results
-  const searchTerm = query.replace(/\+/g, ' ').split(/\s+/)[0];
-  const url = `${DEVTO_BASE}?tag=${encodeURIComponent(searchTerm)}&per_page=5&top=7`;
+  // Dev.to tag API only supports single-word tags, so use first keyword
+  // Map common compound topics to valid Dev.to tags
+  const TAG_MAP = {
+    'deep learning': 'deeplearning',
+    'transformer': 'transformers',
+    'LLM fine-tuning': 'llm',
+    'AI agents': 'ai',
+    'multimodal AI': 'ai',
+    'RLHF': 'machinelearning',
+    'MLOps': 'mlops',
+    'LLM inference': 'llm',
+    'MCP protocol': 'ai',
+    'AI guardrails': 'ai',
+    'quantization LLM': 'machinelearning',
+    'distributed training': 'deeplearning',
+    'prompt engineering': 'promptengineering',
+    'RAG retrieval': 'ai',
+    'AI agents LangChain': 'langchain',
+    'AI production deployment': 'ai',
+    'LLM evaluation': 'llm',
+    'AI engineering': 'ai',
+  };
+  const tag = TAG_MAP[query] || query.split(/\s+/)[0].toLowerCase();
+  const url = `${DEVTO_BASE}?tag=${encodeURIComponent(tag)}&per_page=5`;
   const res = await fetchWithTimeout(url);
   if (!res.ok) return [];
   const data = await res.json();
@@ -167,9 +215,9 @@ async function fetchDevto(query) {
 function scoreItem(item) {
   // Engagement (0-50): normalized log scale
   const engagement = Math.min(50, Math.log2(1 + item.points) * 5 + Math.log2(1 + item.comments) * 3);
-  // Recency (0-50): exponential decay over 14 days
+  // Recency (0-50): exponential decay over 30 days
   const ageHours = item.age / (1000 * 60 * 60);
-  const recency = 50 * Math.exp(-ageHours / (14 * 24));
+  const recency = 50 * Math.exp(-ageHours / (30 * 24));
   return Math.round(engagement + recency);
 }
 

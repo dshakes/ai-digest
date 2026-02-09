@@ -1,6 +1,6 @@
 export function initTabs() {
   const tabBar = document.getElementById('tabBar');
-  const tabs = tabBar.querySelectorAll('.tab');
+  const tabs = tabBar.querySelectorAll('.nav-item');
   const panels = document.querySelectorAll('.panel');
 
   function activate(tabName) {
@@ -9,7 +9,7 @@ export function initTabs() {
   }
 
   tabBar.addEventListener('click', (e) => {
-    const tab = e.target.closest('.tab');
+    const tab = e.target.closest('.nav-item');
     if (!tab) return;
     const name = tab.dataset.tab;
     activate(name);

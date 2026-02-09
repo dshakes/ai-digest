@@ -1,183 +1,168 @@
-import { fetchJSON } from './fetcher.js';
-import { cache } from './cache.js';
+// Learning Path — collapsible stages, mobile scroll indicators, trending fetch
 
-const CACHE_TTL = 30 * 60 * 1000; // 30 minutes
 const HN_BASE = 'https://hn.algolia.com/api/v1/search';
 const DEVTO_BASE = 'https://dev.to/api/articles';
-
-// Topic definitions per stage — search queries for HN + Dev.to tags
-const TOPICS = {
-  'deep-learning':  { q: 'deep learning tutorial architecture CNN',  tag: 'deeplearning' },
-  'nlp-transformers': { q: 'transformer NLP attention tutorial',     tag: 'nlp' },
-  'llm-finetuning': { q: 'LLM fine-tuning training RLHF',          tag: 'llm' },
-  'agentic-ai':     { q: 'AI agent agentic design ReAct tool use',  tag: 'ai' },
-  'mlops':          { q: 'MLOps pipeline deployment kubernetes',     tag: 'mlops' },
-  'llm-serving':    { q: 'LLM inference serving vLLM deployment',   tag: 'llm' },
-  'mcp-gateways':   { q: 'MCP model context protocol gateway',      tag: 'ai' },
-  'guardrails-ops': { q: 'AI guardrails safety production',         tag: 'machinelearning' },
-  'llm-apis':       { q: 'prompt engineering LLM API tutorial',     tag: 'ai' },
-  'rag-vectors':    { q: 'RAG retrieval augmented vector database', tag: 'ai' },
-  'agents-mcp':     { q: 'AI agent building MCP tool LangGraph',   tag: 'ai' },
-  'production-ai':  { q: 'production AI app deployment LLM',       tag: 'ai' },
-};
-
-const EDU_KEYWORDS = [
-  'tutorial', 'guide', 'introduction', 'intro', 'explained',
-  'how to', 'course', 'learn', 'beginner', 'from scratch',
-  'step by step', 'fundamentals', 'getting started', 'overview',
-  'practical', 'hands-on', 'walkthrough',
-];
-
-// ── Fetch helpers ──────────────────────────────────────────────
-
-async function fetchHN(query) {
-  const monthAgo = Math.floor((Date.now() - 30 * 86400 * 1000) / 1000);
-  const url = `${HN_BASE}?query=${encodeURIComponent(query)}&tags=story&numericFilters=created_at_i>${monthAgo},points>5&hitsPerPage=10`;
-  try {
-    const data = await fetchJSON(url);
-    return (data.hits || []).map(h => ({
-      title: h.title,
-      url: h.url || `https://news.ycombinator.com/item?id=${h.objectID}`,
-      points: h.points || 0,
-      comments: h.num_comments || 0,
-      date: h.created_at,
-      source: 'hn',
-    }));
-  } catch { return []; }
-}
-
-async function fetchDevto(tag) {
-  const url = `${DEVTO_BASE}?tag=${tag}&top=30&per_page=5`;
-  try {
-    const data = await fetchJSON(url);
-    return (data || []).map(d => ({
-      title: d.title,
-      url: d.url,
-      points: d.positive_reactions_count || 0,
-      comments: d.comments_count || 0,
-      date: d.published_at,
-      source: 'devto',
-    }));
-  } catch { return []; }
-}
-
-// ── Scoring ────────────────────────────────────────────────────
-
-function scoreResult(item) {
-  const title = (item.title || '').toLowerCase();
-
-  // Educational content bonus (tutorials/guides rank higher)
-  const eduBonus = EDU_KEYWORDS.some(kw => title.includes(kw)) ? 25 : 0;
-
-  // Popularity — normalized across sources
-  const popularity = Math.min(100,
-    item.source === 'hn'
-      ? (item.points / 3) + (item.comments * 0.5)
-      : (item.points / 2) + (item.comments * 0.5)
-  );
-
-  // Recency — 7-day half-life (educational content stays relevant longer)
-  const ageHours = (Date.now() - new Date(item.date).getTime()) / 3.6e6;
-  const recency = 100 * Math.exp(-ageHours / (7 * 24));
-
-  // Source authority
-  const authority = item.source === 'hn' ? 90 : 60;
-
-  return (recency * 0.20) + (popularity * 0.30) + (authority * 0.20) + (eduBonus * 0.30);
-}
-
-// ── Fetch trending for a topic ─────────────────────────────────
-
-async function fetchTrending(topicId) {
-  const key = 'lp-trending:' + topicId;
-  const cached = cache.get(key);
-  if (cached) return cached;
-
-  const topic = TOPICS[topicId];
-  if (!topic) return [];
-
-  const [hn, devto] = await Promise.allSettled([
-    fetchHN(topic.q),
-    fetchDevto(topic.tag),
-  ]);
-
-  const items = [
-    ...(hn.status === 'fulfilled' ? hn.value : []),
-    ...(devto.status === 'fulfilled' ? devto.value : []),
-  ];
-
-  // Deduplicate by URL
-  const seen = new Set();
-  const unique = items.filter(i => {
-    if (!i.url || seen.has(i.url)) return false;
-    seen.add(i.url);
-    return true;
-  });
-
-  const results = unique
-    .map(i => ({ ...i, score: scoreResult(i) }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 2); // Top 2 trending per stage
-
-  cache.set(key, results, CACHE_TTL);
-  return results;
-}
-
-// ── Rendering ──────────────────────────────────────────────────
-
-function escapeHTML(str) {
-  const d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
-}
-
-function renderTrending(container, items) {
-  const fragment = document.createDocumentFragment();
-  items.forEach(item => {
-    const a = document.createElement('a');
-    a.href = item.url;
-    a.target = '_blank';
-    a.rel = 'noopener';
-    a.className = 'learning-path__link learning-path__link--trending';
-    a.innerHTML =
-      '<span class="material-icons-outlined">trending_up</span> ' +
-      escapeHTML(item.title) +
-      ' <span class="learning-path__cost learning-path__cost--trending">trending</span>';
-    fragment.appendChild(a);
-  });
-  container.appendChild(fragment);
-}
-
-// ── Init ───────────────────────────────────────────────────────
+const TRENDING_CACHE = {};
+const TRENDING_TTL = 30 * 60 * 1000; // 30 min
 
 export function initLearningPath() {
-  // 1. Collapsible stages — individual handlers per stage
+  initCollapsibleStages();
+  initMobileScrollIndicator();
+  initTrendingToggles();
+}
+
+// ─── Collapsible stages — click header/title to expand/collapse ───
+function initCollapsibleStages() {
   document.querySelectorAll('.learning-path__track-stage').forEach(stage => {
     stage.addEventListener('click', e => {
-      if (e.target.closest('a') || e.target.closest('.learning-path__resources')) return;
+      if (e.target.closest('a') || e.target.closest('.learning-path__resources') ||
+          e.target.closest('.learning-path__trending')) return;
       stage.classList.toggle('is-expanded');
     });
   });
+}
 
-  // 2. Mobile scroll indicator — update active dot on scroll
+// ─── Mobile scroll indicator — update active dot on swipe ───
+function initMobileScrollIndicator() {
   const tracks = document.querySelector('.learning-path__tracks');
   const dots = document.querySelectorAll('.learning-path__scroll-dot');
   if (tracks && dots.length) {
-    const updateDots = () => {
+    tracks.addEventListener('scroll', () => {
       const cardWidth = tracks.scrollWidth / 3;
       const idx = Math.min(2, Math.round(tracks.scrollLeft / cardWidth));
       dots.forEach((d, i) => d.classList.toggle('active', i === idx));
-    };
-    tracks.addEventListener('scroll', updateDots, { passive: true });
+    }, { passive: true });
+  }
+}
+
+// ─── Trending toggle — click to expand & fetch trending resources ───
+function initTrendingToggles() {
+  document.querySelectorAll('.learning-path__trending-toggle').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const trending = btn.closest('.learning-path__trending');
+      const isOpen = trending.classList.toggle('is-trending-open');
+      if (isOpen) {
+        const topic = trending.closest('.learning-path__track-stage')?.dataset.topic;
+        if (topic) fetchTrending(trending, topic);
+      }
+    });
+  });
+}
+
+// ─── Fetch trending links from HN Algolia + Dev.to ───
+async function fetchTrending(container, topic) {
+  const linksEl = container.querySelector('.learning-path__trending-links');
+  if (!linksEl || linksEl.dataset.loaded) return;
+
+  // Check cache
+  const cached = TRENDING_CACHE[topic];
+  if (cached && Date.now() - cached.ts < TRENDING_TTL) {
+    renderTrendingLinks(linksEl, cached.items);
+    return;
   }
 
-  // 3. Fetch trending resources for each stage with a data-topic attribute
-  document.querySelectorAll('.learning-path__track-stage[data-topic]').forEach(stage => {
-    const container = stage.querySelector('.learning-path__trending');
-    if (!container) return;
+  linksEl.innerHTML = '<div class="learning-path__trending-loader">Loading trending resources…</div>';
 
-    fetchTrending(stage.dataset.topic)
-      .then(items => { if (items.length) renderTrending(container, items); })
-      .catch(() => {}); // Curated resources remain as fallback
-  });
+  const keywords = topic.split(/\s+/).join('+');
+
+  try {
+    const [hnItems, devtoItems] = await Promise.allSettled([
+      fetchHN(keywords),
+      fetchDevto(keywords),
+    ]);
+
+    const hn = hnItems.status === 'fulfilled' ? hnItems.value : [];
+    const devto = devtoItems.status === 'fulfilled' ? devtoItems.value : [];
+
+    // Merge, score, dedupe, and pick top 3
+    const merged = [...hn, ...devto]
+      .map(item => ({ ...item, score: scoreItem(item) }))
+      .sort((a, b) => b.score - a.score);
+
+    // Dedupe by domain
+    const seen = new Set();
+    const unique = [];
+    for (const item of merged) {
+      try {
+        const domain = new URL(item.url).hostname;
+        if (!seen.has(domain)) {
+          seen.add(domain);
+          unique.push(item);
+        }
+      } catch { unique.push(item); }
+      if (unique.length >= 3) break;
+    }
+
+    TRENDING_CACHE[topic] = { items: unique, ts: Date.now() };
+    renderTrendingLinks(linksEl, unique);
+  } catch {
+    linksEl.innerHTML = '<span style="font-size:11px;color:var(--md-grey-400)">Could not load trending</span>';
+  }
+}
+
+async function fetchHN(query) {
+  const weekAgo = Math.floor((Date.now() - 14 * 24 * 60 * 60 * 1000) / 1000);
+  const url = `${HN_BASE}?query=${encodeURIComponent(query)}&tags=story&numericFilters=created_at_i>${weekAgo}&hitsPerPage=10`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return (data.hits || [])
+    .filter(h => h.url && h.title)
+    .map(h => ({
+      title: h.title,
+      url: h.url,
+      points: h.points || 0,
+      comments: h.num_comments || 0,
+      source: 'HN',
+      age: Date.now() - new Date(h.created_at).getTime(),
+    }));
+}
+
+async function fetchDevto(query) {
+  const url = `${DEVTO_BASE}?tag=${encodeURIComponent(query.split('+')[0])}&per_page=5&top=7`;
+  const res = await fetch(url);
+  if (!res.ok) return [];
+  const data = await res.json();
+  return (data || [])
+    .filter(a => a.url && a.title)
+    .map(a => ({
+      title: a.title,
+      url: a.url,
+      points: a.positive_reactions_count || 0,
+      comments: a.comments_count || 0,
+      source: 'Dev.to',
+      age: Date.now() - new Date(a.published_at).getTime(),
+    }));
+}
+
+function scoreItem(item) {
+  // Engagement (0-50): normalized log scale
+  const engagement = Math.min(50, Math.log2(1 + item.points) * 5 + Math.log2(1 + item.comments) * 3);
+  // Recency (0-50): exponential decay over 14 days
+  const ageHours = item.age / (1000 * 60 * 60);
+  const recency = 50 * Math.exp(-ageHours / (14 * 24));
+  return Math.round(engagement + recency);
+}
+
+function renderTrendingLinks(container, items) {
+  if (!items.length) {
+    container.innerHTML = '<span style="font-size:11px;color:var(--md-grey-400)">No trending resources found</span>';
+    container.dataset.loaded = 'true';
+    return;
+  }
+  container.innerHTML = items.map(item => `
+    <a href="${item.url}" target="_blank" rel="noopener">
+      <span class="material-icons-outlined">trending_up</span>
+      ${escapeHtml(item.title)}
+      <span class="learning-path__trending-score">${item.points} pts · ${item.source}</span>
+    </a>
+  `).join('');
+  container.dataset.loaded = 'true';
+}
+
+function escapeHtml(str) {
+  const el = document.createElement('span');
+  el.textContent = str;
+  return el.innerHTML;
 }

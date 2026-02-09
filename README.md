@@ -10,10 +10,10 @@ A zero-dependency, static AI news aggregator that pulls the latest AI news, rese
 - **Releases** — Curated major product and model launches (Claude, GPT, Gemini, Llama, DeepSeek, etc.) plus trending HN release stories, filtered to exclude SDK noise
 - **Papers** — Latest research from ArXiv, Semantic Scholar, and HuggingFace Daily Papers with citation counts and PDF links
 - **Resources** — Curated free and paid learning resources for beginners to advanced practitioners, filterable by cost and level
-- **AI Engineer** — Interactive 12-week multi-track learning path with collapsible stages and dynamic trending resources (fetched from HN + Dev.to, scored by popularity/relevance). Shared 4-week foundation, then fork into 3 specializations with horizontal-swipe navigation on mobile:
-  - **Applied AI Scientist** — Deep learning, NLP & transformers, LLMs & fine-tuning, agentic AI research (Lilian Weng, AutoGen design patterns)
-  - **AI Platform Engineer** — MLOps & K8s (Kubeflow, KServe), LLM serving (intro → vLLM → KServe), agent infra & MCP gateways (Anthropic MCP blog → spec → LangFuse), guardrails & scalable ops
-  - **AI Software Engineer** — Prompt engineering (DeepLearning.AI → Anthropic → OpenAI), RAG & vectors (Pinecone intro → LlamaIndex), AI agents with MCP & A2A, production apps
+- **AI Engineer** — Comprehensive 16-week multi-track learning path (100+ curated tutorials) with collapsible stages and dynamic trending resources (fetched live from HN + Dev.to, scored by popularity/relevance). Shared 4-week foundation, then fork into 3 specializations (6 stages each) with horizontal-swipe navigation on mobile:
+  - **Applied AI Scientist** — Deep learning architectures (MIT 6.S191, CS231n), NLP & transformers (CS224N, HuggingFace), LLMs & fine-tuning (Karpathy, PEFT/LoRA), agentic AI (Lilian Weng, AutoGen), computer vision & multimodal AI, reinforcement learning & RLHF
+  - **AI Platform Engineer** — MLOps fundamentals (MLflow, DVC), LLM serving (vLLM, TensorRT-LLM, KServe, Ollama), agent infra & MCP gateways, guardrails & observability (NeMo, Evidently), GPU optimization & quantization (GPTQ, AWQ, llama.cpp), distributed training (FSDP, DeepSpeed, Megatron)
+  - **AI Software Engineer** — Prompt engineering & security (OWASP LLM Top 10), RAG & vectors (LlamaIndex, ChromaDB), AI agents with MCP, A2A & LangGraph, production apps (Vercel AI SDK, Streamlit), evaluation & testing (Promptfoo, RAGAS, DeepEval), full-stack AI patterns (CrewAI, Haystack)
 - **Archive** — Historical items older than one year across all categories
 - **Highlights** — Top banner showcasing this week's major releases at a glance
 

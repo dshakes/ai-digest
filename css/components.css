@@ -269,6 +269,48 @@
   flex-wrap: wrap;
 }
 
+/* ===== Load More Button ===== */
+.load-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 12px 24px;
+  margin-top: 16px;
+  font-family: var(--font-primary);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--md-primary-700);
+  background: var(--md-surface);
+  border: 1px solid var(--md-grey-200);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.load-more-btn:hover {
+  background: var(--md-primary-50);
+  border-color: var(--md-primary-200);
+}
+
+.load-more-btn .material-icons-outlined {
+  font-size: 20px;
+}
+
+.load-more-btn__count {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--md-grey-500);
+}
+
+@media (max-width: 600px) {
+  .load-more-btn {
+    padding: 10px 16px;
+    font-size: 13px;
+  }
+}
+
 /* ===== Skeleton Loader ===== */
 .skeleton {
   animation: skeleton-pulse 1.5s ease-in-out infinite;
@@ -1816,6 +1858,34 @@
   top: 9px;
   -webkit-font-feature-settings: 'liga';
   font-feature-settings: 'liga';
+}
+
+/* Key Concepts Glossary */
+.ai-atlas__glossary {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.ai-atlas__glossary dt {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--md-primary-700);
+  padding: 10px 0 2px;
+  border-top: 1px solid var(--md-grey-100);
+}
+
+.ai-atlas__glossary dt:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.ai-atlas__glossary dd {
+  font-size: 13px;
+  color: var(--md-grey-700);
+  line-height: 1.5;
+  padding-bottom: 4px;
+  margin: 0;
 }
 
 /* Reference links */

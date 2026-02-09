@@ -38,11 +38,11 @@ export const CONFIG = {
     apiKey: '',           // Paste your API key here for ready-to-use Atlas
     provider: 'openai',  // 'openai' or 'anthropic'
     openai: {
-      model: 'gpt-4o-mini',
+      model: 'gpt-4.1',
       url: 'https://api.openai.com/v1/chat/completions',
     },
     anthropic: {
-      model: 'claude-3-5-haiku-20241022',
+      model: 'claude-sonnet-4-5-20250929',
       url: 'https://api.anthropic.com/v1/messages',
     },
     cacheTTL: 24 * 60 * 60 * 1000,  // 24h

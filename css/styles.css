@@ -88,7 +88,7 @@ a:hover {
 
 /* App Bar */
 .app-bar {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+  background: var(--md-grey-900);
   border-bottom: none;
   padding: 0 24px;
   height: 64px;
@@ -98,7 +98,7 @@ a:hover {
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 2px 12px rgba(15, 52, 96, 0.3);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 .app-bar__left {
@@ -110,49 +110,19 @@ a:hover {
 .app-bar__logo {
   width: 34px;
   height: 34px;
-  filter: drop-shadow(0 2px 6px rgba(66, 133, 244, 0.4));
-  transition: transform 0.3s ease;
-}
-
-.app-bar__logo:hover {
-  transform: rotate(-8deg) scale(1.08);
+  filter: drop-shadow(0 1px 4px rgba(66, 133, 244, 0.3));
 }
 
 .app-bar__title {
   font-family: var(--font-display);
   font-size: 24px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.3px;
-  background: linear-gradient(135deg, #8AB4F8 0%, #669DF6 30%, #AB47BC 70%, #8AB4F8 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: banner-shimmer 4s ease-in-out infinite;
-}
-
-@keyframes banner-shimmer {
-  0%, 100% { background-position: 0% center; }
-  50% { background-position: 100% center; }
+  color: #fff;
 }
 
 .app-bar__title span {
-  /* Inherits gradient from parent — no separate color needed */
-}
-
-.app-bar__brand {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.app-bar__tagline {
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  margin-top: -2px;
+  color: var(--md-primary-300);
 }
 
 .app-bar__actions {
@@ -815,11 +785,6 @@ a:hover {
     display: none;
   }
 
-  .app-bar__tagline {
-    font-size: 8px;
-    letter-spacing: 0.8px;
-  }
-
   /* Navigation (mobile) */
   .nav-sidebar {
     padding: 0 4px;
@@ -940,10 +905,6 @@ a:hover {
 
   .app-bar__title {
     font-size: 16px;
-  }
-
-  .app-bar__tagline {
-    display: none;
   }
 }
 

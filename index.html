@@ -18,10 +18,7 @@
   <header class="app-bar">
     <div class="app-bar__left">
       <img src="assets/favicon.svg" alt="" class="app-bar__logo">
-      <div class="app-bar__brand">
-        <h1 class="app-bar__title">Zetta<span>naut</span></h1>
-        <span class="app-bar__tagline">Navigate the AI Universe</span>
-      </div>
+      <h1 class="app-bar__title">Zetta<span>naut</span></h1>
     </div>
     <div class="app-bar__actions">
       <span class="last-updated" id="lastUpdated"></span>
@@ -50,7 +47,15 @@
   <div class="app-layout">
     <!-- Sidebar Navigation (desktop) / Tab Bar (mobile) -->
     <nav class="nav-sidebar" id="tabBar">
-      <button class="nav-item active" data-tab="news">
+      <button class="nav-item active" data-tab="ai-engineer">
+        <span class="material-icons-outlined">route</span>
+        <span class="nav-item__label">AI Engineer</span>
+      </button>
+      <button class="nav-item" data-tab="ai-atlas">
+        <span class="material-icons-outlined">auto_awesome</span>
+        <span class="nav-item__label">AI Atlas</span>
+      </button>
+      <button class="nav-item" data-tab="news">
         <span class="material-icons-outlined">newspaper</span>
         <span class="nav-item__label">News</span>
         <span class="badge" id="newsCount"></span>
@@ -69,14 +74,6 @@
         <span class="material-icons-outlined">school</span>
         <span class="nav-item__label">Resources</span>
       </button>
-      <button class="nav-item" data-tab="ai-engineer">
-        <span class="material-icons-outlined">route</span>
-        <span class="nav-item__label">AI Engineer</span>
-      </button>
-      <button class="nav-item" data-tab="ai-atlas">
-        <span class="material-icons-outlined">auto_awesome</span>
-        <span class="nav-item__label">AI Atlas</span>
-      </button>
       <button class="nav-item" data-tab="archive">
         <span class="material-icons-outlined">inventory_2</span>
         <span class="nav-item__label">Archive</span>
@@ -87,7 +84,7 @@
     <!-- Content -->
     <main class="content" id="content">
     <!-- News Panel -->
-    <section class="panel active" id="panel-news">
+    <section class="panel" id="panel-news">
       <div class="panel-brief">
         <span class="material-icons-outlined">newspaper</span>
         <p>Curated AI news from Hacker News, Reddit, Dev.to and more — ranked by relevance and engagement.</p>
@@ -206,7 +203,7 @@
     </section>
 
     <!-- AI Engineer Panel -->
-    <section class="panel" id="panel-ai-engineer">
+    <section class="panel active" id="panel-ai-engineer">
       <div class="learning-path">
 
         <!-- Hero -->

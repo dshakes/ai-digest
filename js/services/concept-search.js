@@ -232,16 +232,53 @@ function renderCategoryFilters() {
 }
 
 // ─── Concept Chips ───
+const CHIPS_PAGE_SIZE = 20;
+
 function renderConceptChips(category) {
   const el = document.getElementById('atlasChips');
   if (!el) return;
   const filtered = category ? CONCEPT_INDEX.filter(c => c.cat === category) : CONCEPT_INDEX;
-  el.innerHTML = filtered.map(c => `
+
+  let shown = Math.min(CHIPS_PAGE_SIZE, filtered.length);
+  el.innerHTML = filtered.slice(0, shown).map(c => `
     <button class="ai-atlas__chip" data-name="${esc(c.name)}">
       ${esc(c.name)}
       <span class="ai-atlas__chip-cat">${esc(c.cat)}</span>
     </button>
   `).join('');
+
+  // Show More button for chips
+  const existingMore = el.parentElement.querySelector('.atlas-show-more');
+  if (existingMore) existingMore.remove();
+
+  if (filtered.length > CHIPS_PAGE_SIZE) {
+    const btn = document.createElement('button');
+    btn.className = 'load-more-btn atlas-show-more';
+    btn.style.marginTop = '12px';
+    btn.innerHTML = `<span class="material-icons-outlined">expand_more</span> Show More Concepts <span class="load-more-btn__count">(${filtered.length - shown} more)</span>`;
+    el.parentElement.appendChild(btn);
+    btn.addEventListener('click', () => {
+      const next = filtered.slice(shown, shown + CHIPS_PAGE_SIZE);
+      next.forEach(c => {
+        const chip = document.createElement('button');
+        chip.className = 'ai-atlas__chip';
+        chip.dataset.name = c.name;
+        chip.innerHTML = `${esc(c.name)} <span class="ai-atlas__chip-cat">${esc(c.cat)}</span>`;
+        chip.addEventListener('click', () => {
+          document.getElementById('atlasSearch').value = c.name;
+          lookupConcept(c.name);
+        });
+        el.appendChild(chip);
+      });
+      shown += next.length;
+      if (shown >= filtered.length) {
+        btn.remove();
+      } else {
+        btn.querySelector('.load-more-btn__count').textContent = `(${filtered.length - shown} more)`;
+      }
+    });
+  }
+
   el.addEventListener('click', e => {
     const chip = e.target.closest('.ai-atlas__chip');
     if (!chip) return;
@@ -375,26 +412,48 @@ async function callLLM(conceptName) {
   const provider = getProvider();
   if (!apiKey) throw new Error('No API key configured');
 
-  const systemPrompt = `You are an expert AI encyclopedia. When asked about an AI concept, provide a comprehensive, educational explanation that helps someone truly understand the topic.
+  const systemPrompt = `You are an expert AI encyclopedia used by engineers learning AI. Provide comprehensive, structured explanations with clear sub-sections.
 
 You MUST respond with valid JSON in this exact format:
 {
-  "summary": "A clear 1-2 sentence definition accessible to beginners.",
-  "explanation": "A detailed 3-4 paragraph explanation. Cover what it is, why it matters, how it works at a high level, and current state of the art. Use **bold** for key terms. Separate paragraphs with \\n\\n.",
-  "keyPoints": ["5-6 concise bullet points covering the most important aspects"],
-  "related": ["3-5 related AI concept names"],
+  "summary": "A clear 2-3 sentence definition accessible to beginners that captures the essence and importance of the concept.",
+  "sections": [
+    {
+      "heading": "What It Is",
+      "content": "Clear explanation of the concept. Use **bold** for key terms. Separate paragraphs with \\n\\n."
+    },
+    {
+      "heading": "How It Works",
+      "content": "Technical explanation of the mechanism, algorithm, or architecture. Include key sub-concepts."
+    },
+    {
+      "heading": "Why It Matters",
+      "content": "Real-world impact, use cases, and why engineers should care."
+    },
+    {
+      "heading": "Current State & Trends",
+      "content": "Latest developments, popular implementations, and where the field is heading."
+    }
+  ],
+  "keyConcepts": [
+    {"term": "Key Term 1", "definition": "One-sentence definition of this sub-concept"},
+    {"term": "Key Term 2", "definition": "One-sentence definition of this sub-concept"}
+  ],
+  "keyPoints": ["6-8 concise bullet points covering the most important practical takeaways"],
+  "related": ["4-6 related AI concept names the reader should explore next"],
   "references": [
     {"title": "Resource title", "url": "https://real-url.com"}
   ]
 }
 
 Rules:
-- Explanations should be genuinely educational, written in clear professional prose
-- Use **bold** for important terms in the explanation
-- For references, only include URLs you are confident are real and accessible
-- Include 2-3 high-quality references (official docs, seminal papers, authoritative tutorials)
+- Each section should be 2-3 paragraphs of genuinely educational, professional prose
+- Use **bold** for important terms throughout
+- Include 4-6 keyConcepts that define important sub-terms within the topic
+- For references, only include URLs you are confident are real and accessible (official docs, seminal papers, authoritative tutorials)
+- Include 3-5 high-quality references
 - Related concepts should be real AI/ML concepts the reader might want to explore next
-- If you don't recognize the concept, still try to provide the best explanation you can`;
+- If the concept is broad, focus sections on the most important aspects for a practicing engineer`;
 
   const userPrompt = `Explain this AI concept in detail: "${conceptName}"`;
 
@@ -411,7 +470,7 @@ Rules:
       },
       body: JSON.stringify({
         model: CONFIG.ATLAS.anthropic.model,
-        max_tokens: 2048,
+        max_tokens: 4096,
         system: systemPrompt,
         messages: [{ role: 'user', content: userPrompt }],
         stream: true,
@@ -528,9 +587,18 @@ function parseResponse(text) {
 
   try {
     const data = JSON.parse(jsonMatch[0]);
+    // Build explanation from sections if available, else fall back to flat explanation
+    let explanation = data.explanation || '';
+    if (data.sections && data.sections.length) {
+      explanation = data.sections.map(s =>
+        `## ${s.heading}\n\n${s.content}`
+      ).join('\n\n');
+    }
     return {
       summary: data.summary || '',
-      explanation: data.explanation || '',
+      explanation,
+      sections: data.sections || [],
+      keyConcepts: data.keyConcepts || data.key_concepts || [],
       keyPoints: data.keyPoints || data.key_points || [],
       related: data.related || data.relatedConcepts || [],
       references: data.references || [],
@@ -573,6 +641,33 @@ function renderDetail(conceptName, data) {
   const detail = document.getElementById('atlasDetail');
   if (!detail) return;
 
+  // Render sections (new structured format) or fall back to flat explanation
+  let mainContentHtml = '';
+  if (data.sections && data.sections.length) {
+    const SECTION_ICONS = { 'What It Is': 'info', 'How It Works': 'settings', 'Why It Matters': 'star', 'Current State & Trends': 'trending_up' };
+    mainContentHtml = data.sections.map(s => {
+      const icon = SECTION_ICONS[s.heading] || 'article';
+      return `<div class="ai-atlas__section">
+        <h3><span class="material-icons-outlined">${icon}</span> ${esc(s.heading)}</h3>
+        <div class="ai-atlas__explanation">${renderMarkdown(s.content)}</div>
+      </div>`;
+    }).join('');
+  } else {
+    mainContentHtml = `<div class="ai-atlas__section">
+      <h3><span class="material-icons-outlined">menu_book</span> In Depth</h3>
+      <div class="ai-atlas__explanation">${renderMarkdown(data.explanation)}</div>
+    </div>`;
+  }
+
+  // Key concepts glossary
+  const keyConceptsHtml = (data.keyConcepts || []).length ? `
+    <div class="ai-atlas__section">
+      <h3><span class="material-icons-outlined">lightbulb</span> Key Concepts</h3>
+      <dl class="ai-atlas__glossary">
+        ${data.keyConcepts.map(kc => `<dt>${esc(kc.term)}</dt><dd>${esc(kc.definition)}</dd>`).join('')}
+      </dl>
+    </div>` : '';
+
   const refsHtml = (data.references || []).map(ref =>
     `<a href="${ref.url}" target="_blank" rel="noopener" class="ai-atlas__ref-link">
       <span class="material-icons-outlined">open_in_new</span> ${esc(ref.title)}
@@ -596,10 +691,8 @@ function renderDetail(conceptName, data) {
       </div>
       <div class="ai-atlas__card-body">
         <div class="ai-atlas__card-main">
-          <div class="ai-atlas__section">
-            <h3><span class="material-icons-outlined">menu_book</span> In Depth</h3>
-            <div class="ai-atlas__explanation">${renderMarkdown(data.explanation)}</div>
-          </div>
+          ${mainContentHtml}
+          ${keyConceptsHtml}
           ${refsHtml ? `
           <div class="ai-atlas__section">
             <h3><span class="material-icons-outlined">link</span> Learn More</h3>
@@ -612,7 +705,7 @@ function renderDetail(conceptName, data) {
           </div>` : ''}
         </div>
         <aside class="ai-atlas__card-sidebar">
-          <h4><span class="material-icons-outlined">checklist</span> Key Points</h4>
+          <h4><span class="material-icons-outlined">checklist</span> Key Takeaways</h4>
           <ul class="ai-atlas__key-points">
             ${(data.keyPoints || []).map(p => `<li>${esc(p)}</li>`).join('')}
           </ul>

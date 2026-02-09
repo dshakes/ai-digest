@@ -1,5 +1,7 @@
 import { createNewsCard, createPaperCard, createReleaseCard, createResourceCard, timeAgo } from './cards.js';
 
+const PAGE_SIZE = 10;
+
 function renderGrid(gridId, items, cardFactory) {
   const grid = document.getElementById(gridId);
   if (!grid) return;
@@ -15,9 +17,39 @@ function renderGrid(gridId, items, cardFactory) {
     return;
   }
 
+  // Show first batch
+  let shown = 0;
   const fragment = document.createDocumentFragment();
-  items.forEach(item => fragment.appendChild(cardFactory(item)));
+  const batch = items.slice(0, PAGE_SIZE);
+  batch.forEach(item => fragment.appendChild(cardFactory(item)));
   grid.appendChild(fragment);
+  shown = batch.length;
+
+  // Remove existing load-more button if any
+  const existingBtn = grid.parentElement.querySelector('.load-more-btn');
+  if (existingBtn) existingBtn.remove();
+
+  // Add Load More button if there are more items
+  if (items.length > PAGE_SIZE) {
+    const btn = document.createElement('button');
+    btn.className = 'load-more-btn';
+    btn.innerHTML = `<span class="material-icons-outlined">expand_more</span> Load More <span class="load-more-btn__count">(${items.length - shown} remaining)</span>`;
+    grid.parentElement.appendChild(btn);
+
+    btn.addEventListener('click', () => {
+      const nextBatch = items.slice(shown, shown + PAGE_SIZE);
+      const frag = document.createDocumentFragment();
+      nextBatch.forEach(item => frag.appendChild(cardFactory(item)));
+      grid.appendChild(frag);
+      shown += nextBatch.length;
+
+      if (shown >= items.length) {
+        btn.remove();
+      } else {
+        btn.querySelector('.load-more-btn__count').textContent = `(${items.length - shown} remaining)`;
+      }
+    });
+  }
 }
 
 export function renderNews(items) {

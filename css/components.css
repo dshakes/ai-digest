@@ -986,6 +986,10 @@
   margin-left: auto;
   transition: transform 0.3s ease, color 0.2s ease;
   flex-shrink: 0;
+  -webkit-font-feature-settings: 'liga';
+  font-feature-settings: 'liga';
+  line-height: 1;
+  direction: ltr;
 }
 
 .learning-path__track-stage.is-expanded .learning-path__track-stage-header::after {

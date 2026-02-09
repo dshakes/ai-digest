@@ -10,6 +10,10 @@ A zero-dependency, static AI news aggregator that pulls the latest AI news, rese
 - **Releases** — Curated major product and model launches (Claude, GPT, Gemini, Llama, DeepSeek, etc.) plus trending HN release stories, filtered to exclude SDK noise
 - **Papers** — Latest research from ArXiv, Semantic Scholar, and HuggingFace Daily Papers with citation counts and PDF links
 - **Resources** — Curated free and paid learning resources for beginners to advanced practitioners, filterable by cost and level
+- **AI Engineer** — 12-week multi-track learning path: shared foundation (Python, Math, ML, Neural Networks) then fork into 3 specializations:
+  - **Applied AI Scientist** — Deep learning, NLP, transformers, LLMs & fine-tuning, research
+  - **AI Platform Engineer** — MLOps, K8s (Kubeflow, KServe, KubeRay, GPU Operator), inference serving, guardrails
+  - **AI Software Engineer** — Prompt engineering, RAG, MCP, A2A, AI agents, production apps
 - **Archive** — Historical items older than one year across all categories
 - **Highlights** — Top banner showcasing this week's major releases at a glance
 

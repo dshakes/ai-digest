@@ -42,27 +42,32 @@ export async function fetchItems() {
   const cached = cache.get(CACHE_KEY);
   if (cached) return cached;
 
-  const results = await Promise.allSettled(
-    CONFIG.RSS_FEEDS.map(async (feed) => {
-      const doc = await fetchXML(feed.url, { useProxy: true });
-      const sourceId = feedSourceId(feed.name);
-      return parseRSSItems(doc, feed.name).map(item => ({
-        id: `rss-${Array.from(item.url.slice(0, 30), c => c.charCodeAt(0).toString(36)).join('').slice(0, 20)}`,
-        ...item,
-        source: sourceId,
-        sourceName: feed.name,
-        engagement: { score: 0, comments: 0 },
-        tags: ['ai', feed.name],
-        type: 'news',
-      }));
-    })
-  );
+  try {
+    const results = await Promise.allSettled(
+      CONFIG.RSS_FEEDS.map(async (feed) => {
+        const doc = await fetchXML(feed.url, { useProxy: true });
+        const sourceId = feedSourceId(feed.name);
+        return parseRSSItems(doc, feed.name).map(item => ({
+          id: `rss-${Array.from(item.url.slice(0, 30), c => c.charCodeAt(0).toString(36)).join('').slice(0, 20)}`,
+          ...item,
+          source: sourceId,
+          sourceName: feed.name,
+          engagement: { score: 0, comments: 0 },
+          tags: ['ai', feed.name],
+          type: 'news',
+        }));
+      })
+    );
 
-  const items = [];
-  for (const r of results) {
-    if (r.status === 'fulfilled') items.push(...r.value);
+    const items = [];
+    for (const r of results) {
+      if (r.status === 'fulfilled') items.push(...r.value);
+    }
+
+    cache.set(CACHE_KEY, items, CONFIG.CACHE_TTL.news);
+    return items;
+  } catch {
+    console.warn('RSS fetch failed, skipping');
+    return [];
   }
-
-  cache.set(CACHE_KEY, items, CONFIG.CACHE_TTL.news);
-  return items;
 }

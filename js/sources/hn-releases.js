@@ -53,6 +53,7 @@ export async function fetchItems() {
   const cached = cache.get(CACHE_KEY);
   if (cached) return cached;
 
+  try {
   const monthAgo = Math.floor((Date.now() - 30 * 24 * 60 * 60 * 1000) / 1000);
 
   // Batch products into groups to reduce API calls
@@ -108,6 +109,10 @@ export async function fetchItems() {
 
   cache.set(CACHE_KEY, items, CONFIG.CACHE_TTL.releases);
   return items;
+  } catch {
+    console.warn('HN releases fetch failed, skipping');
+    return [];
+  }
 }
 
 function detectTags(title) {

@@ -10,10 +10,10 @@ A zero-dependency, static AI news aggregator that pulls the latest AI news, rese
 - **Releases** — Curated major product and model launches (Claude, GPT, Gemini, Llama, DeepSeek, etc.) plus trending HN release stories, filtered to exclude SDK noise
 - **Papers** — Latest research from ArXiv, Semantic Scholar, and HuggingFace Daily Papers with citation counts and PDF links
 - **Resources** — Curated free and paid learning resources for beginners to advanced practitioners, filterable by cost and level
-- **AI Engineer** — 12-week multi-track learning path: shared foundation (Python, Math, ML, Neural Networks) then fork into 3 specializations:
-  - **Applied AI Scientist** — Deep learning, NLP, transformers, LLMs & fine-tuning, research
-  - **AI Platform Engineer** — MLOps, K8s (Kubeflow, KServe, KubeRay, GPU Operator), inference serving, guardrails
-  - **AI Software Engineer** — Prompt engineering, RAG, MCP, A2A, AI agents, production apps
+- **AI Engineer** — Interactive 12-week multi-track learning path with collapsible stages. Shared 4-week foundation (Python, Math, ML, Neural Networks), then fork into 3 specializations with badge-ring headers and visual progress rails:
+  - **Applied AI Scientist** — Deep learning architectures, NLP & transformers, LLMs & fine-tuning (DeepLearning.AI), evaluation & research
+  - **AI Platform Engineer** — MLOps & K8s (Kubeflow, KServe, KubeRay, GPU Operator), LLM serving (vLLM, TensorRT-LLM), guardrails & observability, training infra (Ray, KubeRay)
+  - **AI Software Engineer** — Prompt engineering (Anthropic, OpenAI, DeepLearning.AI), RAG & vector databases, AI agents with MCP & A2A, production apps & guardrails
 - **Archive** — Historical items older than one year across all categories
 - **Highlights** — Top banner showcasing this week's major releases at a glance
 

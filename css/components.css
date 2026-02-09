@@ -582,95 +582,67 @@
   margin-left: 4px;
 }
 
-/* Timeline */
-.learning-path__timeline {
-  position: relative;
-  max-width: 860px;
-}
-
-/* Stage row: connector + card */
-.learning-path__stage {
+/* ===== Foundation — Horizontal card pair ===== */
+.learning-path__foundation {
   display: flex;
   align-items: stretch;
   gap: 0;
-  margin-bottom: 0;
+  margin-bottom: 8px;
 }
 
-.learning-path__stage:last-child .learning-path__connector::after {
-  display: none;
-}
-
-/* Connector column (line + node) */
-.learning-path__connector {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 48px;
-  flex-shrink: 0;
-}
-
-/* Vertical line below the node */
-.learning-path__connector::after {
-  content: '';
+.learning-path__foundation-card {
   flex: 1;
-  width: 2px;
-  background: linear-gradient(180deg, #34A853 0%, #1E8E3E 100%);
-  opacity: 0.4;
-}
-
-/* Node circle */
-.learning-path__node {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  flex-shrink: 0;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(52, 168, 83, 0.3);
-}
-
-.learning-path__node .material-icons-outlined {
-  font-size: 20px;
-}
-
-/* Stage node colors — green for foundation */
-.learning-path__stage--1 .learning-path__node { background: #34A853; }
-.learning-path__stage--2 .learning-path__node { background: #1E8E3E; }
-
-/* Card */
-.learning-path__card {
   background: var(--md-surface);
   border-radius: var(--radius-md);
   box-shadow: var(--elevation-1);
   padding: 20px;
-  margin: 0 0 16px 0;
-  flex: 1;
+  position: relative;
   transition: box-shadow 0.2s ease, transform 0.1s ease;
-  border-left: 3px solid transparent;
 }
 
-.learning-path__card:hover {
+.learning-path__foundation-card:hover {
   box-shadow: var(--elevation-2);
   transform: translateY(-1px);
 }
 
-/* Card left-border accent colors — green for foundation */
-.learning-path__stage--1 .learning-path__card { border-left-color: #34A853; }
-.learning-path__stage--2 .learning-path__card { border-left-color: #1E8E3E; }
-
-.learning-path__card-header {
-  margin-bottom: 8px;
-}
-
-.learning-path__card-labels {
+.learning-path__foundation-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #34A853, #1E8E3E);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 8px rgba(52, 168, 83, 0.3);
+}
+
+.learning-path__foundation-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-grey-900);
+  margin-bottom: 4px;
+}
+
+.learning-path__foundation-card .learning-path__duration {
+  margin-bottom: 10px;
+}
+
+.learning-path__foundation-arrow {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  color: var(--md-grey-400);
+  flex-shrink: 0;
+}
+
+.learning-path__foundation-arrow .material-icons-outlined {
+  font-size: 24px;
 }
 
 /* Stage label badge */
@@ -701,14 +673,6 @@
 
 .learning-path__duration .material-icons-outlined {
   font-size: 14px;
-}
-
-.learning-path__card-title {
-  font-family: var(--font-display);
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--md-grey-900);
-  margin-bottom: 6px;
 }
 
 /* Resource links */
@@ -777,7 +741,6 @@
   gap: 8px;
   padding: 24px 0 8px;
   margin: 16px 0 24px;
-  position: relative;
 }
 
 .learning-path__fork::before,
@@ -793,7 +756,7 @@
   color: var(--md-primary-600);
 }
 
-/* ===== Track Grid with Connector Lines ===== */
+/* ===== Track Grid with Fork Connectors ===== */
 .learning-path__tracks {
   position: relative;
   display: grid;
@@ -802,7 +765,6 @@
   padding-top: 32px;
 }
 
-/* Fork connector: ⌐ bracket spanning all 3 columns */
 .learning-path__tracks::before {
   content: '';
   position: absolute;
@@ -816,7 +778,6 @@
   border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 }
 
-/* Center connector line */
 .learning-path__tracks::after {
   content: '';
   position: absolute;
@@ -835,7 +796,7 @@
   box-shadow: var(--elevation-1);
   border-top: 4px solid transparent;
   overflow: hidden;
-  transition: box-shadow 0.2s ease, transform 0.15s ease;
+  transition: box-shadow 0.2s ease;
 }
 
 .learning-path__track:hover {
@@ -851,40 +812,73 @@
   padding: 20px 20px 16px;
   border-bottom: 1px solid var(--md-grey-100);
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  align-items: center;
+  gap: 16px;
 }
 
-/* Track badge — colored circle with icon */
+/* ===== Track Badge — Ring + Icon + Label ===== */
 .learning-path__track-badge {
-  width: 44px;
-  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.learning-path__track-badge-ring {
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  flex-shrink: 0;
+  position: relative;
 }
 
-.learning-path__track-badge .material-icons-outlined {
-  font-size: 22px;
+.learning-path__track-badge-ring::after {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  opacity: 0.3;
 }
 
-.learning-path__track--blue .learning-path__track-badge {
+.learning-path__track-badge-ring .material-icons-outlined {
+  font-size: 24px;
+}
+
+.learning-path__track--blue .learning-path__track-badge-ring {
   background: linear-gradient(135deg, #1A73E8, #4285F4);
-  box-shadow: 0 2px 8px rgba(26, 115, 232, 0.3);
+  box-shadow: 0 3px 12px rgba(26, 115, 232, 0.35);
+}
+.learning-path__track--blue .learning-path__track-badge-ring::after {
+  border-color: #1A73E8;
 }
 
-.learning-path__track--orange .learning-path__track-badge {
+.learning-path__track--orange .learning-path__track-badge-ring {
   background: linear-gradient(135deg, #E65100, #FF8F00);
-  box-shadow: 0 2px 8px rgba(230, 81, 0, 0.3);
+  box-shadow: 0 3px 12px rgba(230, 81, 0, 0.35);
+}
+.learning-path__track--orange .learning-path__track-badge-ring::after {
+  border-color: #E65100;
 }
 
-.learning-path__track--purple .learning-path__track-badge {
+.learning-path__track--purple .learning-path__track-badge-ring {
   background: linear-gradient(135deg, #7B1FA2, #AB47BC);
-  box-shadow: 0 2px 8px rgba(123, 31, 162, 0.3);
+  box-shadow: 0 3px 12px rgba(123, 31, 162, 0.35);
+}
+.learning-path__track--purple .learning-path__track-badge-ring::after {
+  border-color: #7B1FA2;
+}
+
+.learning-path__track-badge-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--md-grey-600);
 }
 
 .learning-path__track-title {
@@ -892,6 +886,7 @@
   font-size: 17px;
   font-weight: 500;
   color: var(--md-grey-900);
+  margin-bottom: 2px;
 }
 
 .learning-path__track-desc {
@@ -900,9 +895,14 @@
   line-height: 1.5;
 }
 
-/* Track stage section */
+/* ===== Track Body — Stage rail with dots ===== */
+.learning-path__track-body {
+  position: relative;
+}
+
 .learning-path__track-stage {
-  padding: 16px 20px;
+  display: flex;
+  gap: 0;
   border-bottom: 1px solid var(--md-grey-100);
 }
 
@@ -910,12 +910,87 @@
   border-bottom: none;
 }
 
+/* Stage progress dot + rail */
+.learning-path__track-stage-dot {
+  width: 36px;
+  flex-shrink: 0;
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.learning-path__track-stage-dot::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  position: absolute;
+  top: 22px;
+  z-index: 1;
+}
+
+.learning-path__track-stage-dot::after {
+  content: '';
+  position: absolute;
+  top: 32px;
+  bottom: 0;
+  width: 2px;
+  opacity: 0.3;
+}
+
+.learning-path__track-stage:last-child .learning-path__track-stage-dot::after {
+  display: none;
+}
+
+/* Rail colors per track */
+.learning-path__track--blue .learning-path__track-stage-dot::before {
+  background: #1A73E8;
+  box-shadow: 0 0 0 3px #E3F2FD;
+}
+.learning-path__track--blue .learning-path__track-stage-dot::after { background: #1A73E8; }
+
+.learning-path__track--orange .learning-path__track-stage-dot::before {
+  background: #E65100;
+  box-shadow: 0 0 0 3px #FFF3E0;
+}
+.learning-path__track--orange .learning-path__track-stage-dot::after { background: #E65100; }
+
+.learning-path__track--purple .learning-path__track-stage-dot::before {
+  background: #7B1FA2;
+  box-shadow: 0 0 0 3px #F3E5F5;
+}
+.learning-path__track--purple .learning-path__track-stage-dot::after { background: #7B1FA2; }
+
+.learning-path__track-stage-content {
+  flex: 1;
+  padding: 14px 16px 14px 0;
+  min-width: 0;
+  cursor: pointer;
+}
+
 .learning-path__track-stage-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   flex-wrap: wrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+.learning-path__track-stage-header::after {
+  content: 'expand_more';
+  font-family: 'Material Icons Outlined';
+  font-size: 20px;
+  color: var(--md-grey-400);
+  margin-left: auto;
+  transition: transform 0.3s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.learning-path__track-stage.is-expanded .learning-path__track-stage-header::after {
+  transform: rotate(180deg);
+  color: var(--md-grey-600);
 }
 
 .learning-path__track-stage-title {
@@ -923,16 +998,33 @@
   font-size: 14px;
   font-weight: 500;
   color: var(--md-grey-900);
-  margin-bottom: 6px;
+  margin-bottom: 0;
+  transition: color 0.2s ease;
 }
 
-/* Track stage resources reuse .learning-path__resources and __link */
+.learning-path__track-stage.is-expanded .learning-path__track-stage-title {
+  margin-bottom: 4px;
+}
+
+.learning-path__track-stage:hover .learning-path__track-stage-title {
+  color: var(--md-primary-700);
+}
+
 .learning-path__track-stage .learning-path__resources {
   border-top: none;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, opacity 0.25s ease;
+  opacity: 0;
+}
+
+.learning-path__track-stage.is-expanded .learning-path__resources {
+  max-height: 300px;
+  opacity: 1;
 }
 
 .learning-path__track-stage .learning-path__link {
-  padding: 7px 0;
+  padding: 6px 0;
   font-size: 12px;
   gap: 6px;
 }
@@ -948,23 +1040,42 @@
   }
 
   .learning-path__track-header {
-    padding: 16px 14px 12px;
+    padding: 16px 12px 12px;
+    gap: 10px;
   }
 
-  .learning-path__track-stage {
-    padding: 12px 14px;
+  .learning-path__track-badge-ring {
+    width: 42px;
+    height: 42px;
+  }
+
+  .learning-path__track-badge-ring .material-icons-outlined {
+    font-size: 20px;
   }
 
   .learning-path__track-title {
-    font-size: 15px;
+    font-size: 14px;
+  }
+
+  .learning-path__track-desc {
+    font-size: 11px;
+  }
+
+  .learning-path__track-stage-content {
+    padding: 10px 10px 10px 0;
   }
 
   .learning-path__track-stage-title {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .learning-path__track-stage .learning-path__link {
     font-size: 11px;
+    padding: 5px 0;
+  }
+
+  .learning-path__track-stage-dot {
+    width: 28px;
   }
 }
 
@@ -982,25 +1093,19 @@
   }
 
   .learning-path__track-header {
-    flex-direction: row;
-    align-items: center;
     gap: 14px;
-  }
-
-  .learning-path__track-desc {
-    display: none;
   }
 }
 
 /* ===== Learning Path — Mobile ===== */
 @media (max-width: 600px) {
   .learning-path__hero {
-    padding: 20px 16px 16px;
-    margin-bottom: 24px;
+    padding: 16px 14px 14px;
+    margin-bottom: 20px;
   }
 
   .learning-path__hero-content {
-    gap: 12px;
+    gap: 10px;
   }
 
   .learning-path__hero-icon {
@@ -1008,41 +1113,51 @@
   }
 
   .learning-path__hero-title {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .learning-path__hero-subtitle {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .learning-path__hero-meta {
-    gap: 14px;
+    gap: 12px;
   }
 
   .learning-path__section-heading {
-    font-size: 12px;
-    margin-bottom: 12px;
+    font-size: 11px;
+    margin-bottom: 10px;
   }
 
-  .learning-path__connector {
-    width: 36px;
+  /* Foundation: stack vertically on mobile */
+  .learning-path__foundation {
+    flex-direction: column;
+    gap: 0;
   }
 
-  .learning-path__node {
-    width: 32px;
-    height: 32px;
-  }
-
-  .learning-path__node .material-icons-outlined {
-    font-size: 16px;
-  }
-
-  .learning-path__card {
+  .learning-path__foundation-card {
     padding: 14px;
   }
 
-  .learning-path__card-title {
+  .learning-path__foundation-arrow {
+    padding: 4px 0;
+    justify-content: center;
+  }
+
+  .learning-path__foundation-arrow .material-icons-outlined {
+    font-size: 20px;
+    transform: rotate(90deg);
+  }
+
+  .learning-path__foundation-title {
     font-size: 14px;
+  }
+
+  .learning-path__foundation-num {
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+    margin-bottom: 8px;
   }
 
   .learning-path__link {
@@ -1052,28 +1167,27 @@
   }
 
   .learning-path__link .material-icons-outlined {
-    font-size: 14px;
+    font-size: 13px;
   }
 
   .learning-path__fork {
-    font-size: 12px;
-    padding: 16px 0 4px;
-    margin: 8px 0 16px;
+    font-size: 11px;
+    padding: 12px 0 4px;
+    margin: 8px 0 12px;
   }
 
-  .learning-path__track-badge {
-    width: 36px;
-    height: 36px;
+  /* Badge compact on mobile */
+  .learning-path__track-badge-ring {
+    width: 40px;
+    height: 40px;
   }
 
-  .learning-path__track-badge .material-icons-outlined {
-    font-size: 18px;
+  .learning-path__track-badge-ring .material-icons-outlined {
+    font-size: 20px;
   }
 
   .learning-path__track-header {
-    padding: 14px 14px 10px;
-    flex-direction: row;
-    align-items: center;
+    padding: 14px;
     gap: 12px;
   }
 
@@ -1085,8 +1199,12 @@
     display: none;
   }
 
-  .learning-path__track-stage {
-    padding: 12px 14px;
+  .learning-path__track-stage-dot {
+    width: 28px;
+  }
+
+  .learning-path__track-stage-content {
+    padding: 10px 12px 10px 0;
   }
 
   .learning-path__track-stage-title {
@@ -1095,6 +1213,6 @@
 
   .learning-path__track-stage .learning-path__link {
     font-size: 11px;
-    padding: 6px 0;
+    padding: 5px 0;
   }
 }

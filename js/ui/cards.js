@@ -169,7 +169,7 @@ export function createPodcasterGroup(channel, videos) {
           <span class="channel-group__video-title">${escapeHTML(v.title)}</span>
           <span class="channel-group__video-date">${formatVideoDate(v.publishedAt)}</span>
         </a>
-      `).join('') : '<span class="channel-group__no-videos">Could not load recent videos</span>'}
+      `).join('') : `<a href="${escapeAttr(channel.url)}" target="_blank" rel="noopener" class="channel-group__yt-fallback"><span class="material-icons-outlined">play_circle</span> Watch on YouTube</a>`}
     </div>
   `;
 

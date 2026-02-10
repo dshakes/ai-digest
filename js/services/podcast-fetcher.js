@@ -20,35 +20,56 @@ function parseEntry(entry) {
   };
 }
 
+const MAX_RETRIES = 2;
+const RETRY_DELAY = 1500;
+
 async function fetchChannelVideos(channelId) {
   const cached = cache.get(`podcast-yt:${channelId}`);
   if (cached) return cached;
 
-  const doc = await fetchXML(`${YT_FEED_URL}${channelId}`, { useProxy: true, timeout: 10000 });
-  const entries = Array.from(doc.querySelectorAll('entry')).slice(0, MAX_VIDEOS);
-  const videos = entries.map(parseEntry);
+  let lastError;
+  for (let attempt = 0; attempt < MAX_RETRIES; attempt++) {
+    try {
+      if (attempt > 0) await delay(RETRY_DELAY);
+      const doc = await fetchXML(`${YT_FEED_URL}${channelId}`, { useProxy: true, timeout: 12000 });
+      const entries = Array.from(doc.querySelectorAll('entry')).slice(0, MAX_VIDEOS);
+      const videos = entries.map(parseEntry);
+      cache.set(`podcast-yt:${channelId}`, videos, CACHE_TTL);
+      return videos;
+    } catch (e) {
+      lastError = e;
+    }
+  }
+  throw lastError;
+}
 
-  cache.set(`podcast-yt:${channelId}`, videos, CACHE_TTL);
-  return videos;
+function delay(ms) {
+  return new Promise(r => setTimeout(r, ms));
 }
 
 export async function fetchAllChannelVideos(channels) {
-  const results = await Promise.allSettled(
-    channels.map(ch => fetchChannelVideos(ch.channelId))
-  );
-
   const videosByChannel = {};
   let errorCount = 0;
 
-  results.forEach((result, i) => {
-    const channelId = channels[i].channelId;
-    if (result.status === 'fulfilled') {
-      videosByChannel[channelId] = result.value;
-    } else {
-      videosByChannel[channelId] = [];
-      errorCount++;
-    }
-  });
+  // Fetch in small batches of 3 to avoid proxy rate limits
+  const BATCH = 3;
+  for (let i = 0; i < channels.length; i += BATCH) {
+    const batch = channels.slice(i, i + BATCH);
+    const results = await Promise.allSettled(
+      batch.map(ch => fetchChannelVideos(ch.channelId))
+    );
+    results.forEach((result, j) => {
+      const channelId = batch[j].channelId;
+      if (result.status === 'fulfilled') {
+        videosByChannel[channelId] = result.value;
+      } else {
+        videosByChannel[channelId] = [];
+        errorCount++;
+      }
+    });
+    // Small pause between batches
+    if (i + BATCH < channels.length) await delay(300);
+  }
 
   return { videosByChannel, errorCount };
 }

@@ -186,6 +186,15 @@ function filterPodcasts() {
   const q = document.getElementById('podcastsSearch')?.value?.toLowerCase();
   const topic = filters.podcastTopic;
 
+  // Category relevance weights (higher = more relevant to AI audience)
+  const CATEGORY_RELEVANCE = { technical: 1.0, interviews: 0.9, news: 0.8, educational: 0.75 };
+
+  // Count famous episodes per channel (engagement/views proxy)
+  const episodeCounts = {};
+  (podcastsData.famousEpisodes || []).forEach(ep => {
+    episodeCounts[ep.channel] = (episodeCounts[ep.channel] || 0) + 1;
+  });
+
   // Filter channels
   let channels = podcastsData.channels;
   if (topic !== 'all') {
@@ -199,6 +208,21 @@ function filterPodcasts() {
       ch.tags?.some(t => t.toLowerCase().includes(q))
     );
   }
+
+  // Sort by composite score: subscribers (50%) + relevance (30%) + famous episodes (20%)
+  channels = [...channels].sort((a, b) => {
+    const subsA = parseViewCount(a.subscribers);
+    const subsB = parseViewCount(b.subscribers);
+    const maxSubs = Math.max(subsA, subsB, 1);
+    const relA = CATEGORY_RELEVANCE[a.category] || 0.5;
+    const relB = CATEGORY_RELEVANCE[b.category] || 0.5;
+    const epA = episodeCounts[a.title] || 0;
+    const epB = episodeCounts[b.title] || 0;
+    const maxEp = Math.max(epA, epB, 1);
+    const scoreA = (subsA / maxSubs) * 0.5 + relA * 0.3 + (epA / maxEp) * 0.2;
+    const scoreB = (subsB / maxSubs) * 0.5 + relB * 0.3 + (epB / maxEp) * 0.2;
+    return scoreB - scoreA;
+  });
 
   // Filter famous episodes and sort by views descending
   let episodes = podcastsData.famousEpisodes;

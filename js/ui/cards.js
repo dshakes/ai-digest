@@ -159,6 +159,7 @@ export function createPodcasterGroup(channel, videos) {
         <span><span class="material-icons-outlined">group</span>${escapeHTML(channel.subscribers)}</span>
       </div>
       <p class="channel-group__desc">${escapeHTML(desc)}</p>
+      <a href="${escapeAttr(channel.url)}" target="_blank" rel="noopener" class="channel-group__link">View Channel <span class="material-icons-outlined">arrow_forward</span></a>
     </div>
     ${displayVideos.length ? `<div class="channel-group__videos">
       ${displayVideos.map(v => `

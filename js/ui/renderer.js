@@ -169,7 +169,7 @@ export function renderHighlights(releases) {
   const NON_COMPANY_TAGS = new Set(['AI', 'inference', 'coding-tool', 'image-gen', 'search']);
 
   for (const item of liveReleases) {
-    if (combined.length >= 5) break;
+    if (combined.length >= 10) break;
     const norm = normalize(item.title);
     if (seenTitles.some(t => t.includes(norm) || norm.includes(t))) continue;
     // Use company tag as author for logo display
@@ -183,7 +183,7 @@ export function renderHighlights(releases) {
     seenTitles.push(norm);
   }
 
-  renderHighlightCards('highlightsWeek', combined.slice(0, 5), 'No major releases found');
+  renderHighlightCards('highlightsWeek', combined.slice(0, 10), 'No major releases found');
 }
 
 const COMPANY_COLORS = {

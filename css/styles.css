@@ -352,7 +352,11 @@ a:hover {
 .highlights__cards {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x proximity;
+  padding-bottom: 6px;
+  scrollbar-width: thin;
 }
 
 .highlight-card {
@@ -361,8 +365,9 @@ a:hover {
   box-shadow: var(--elevation-1);
   padding: 14px 18px;
   min-width: 220px;
-  max-width: 300px;
+  max-width: 280px;
   flex-shrink: 0;
+  scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   gap: 6px;

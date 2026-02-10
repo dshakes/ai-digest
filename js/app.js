@@ -26,13 +26,13 @@ const TOOL_KEYWORDS = /\b(cursor|windsurf|copilot|codex|claude.?code|replit|v0|o
 
 const filters = {
   newsSource: 'all',
-  newsSort: 'relevance',
+  newsSort: 'newest',
   newsTopic: 'all',
   releasesSource: 'all',
-  releasesSort: 'relevance',
+  releasesSort: 'newest',
   releasesTopic: 'all',
   papersSource: 'all',
-  papersSort: 'relevance',
+  papersSort: 'newest',
   archiveSource: 'all',
   archiveSort: 'newest',
   resourceCost: 'all',

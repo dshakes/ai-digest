@@ -129,7 +129,7 @@ async function loadResources() {
 
 async function loadPodcasts() {
   try {
-    showPodcastLoader('podcastsTopSection');
+    showPodcastLoader('podcastsChannelGroups');
     const resp = await fetch('data/podcasts.json');
     podcastsData = await resp.json();
 
@@ -142,6 +142,19 @@ async function loadPodcasts() {
   } catch {
     showToast('Could not load podcasts', 'error');
   }
+}
+
+function parseViewCount(str) {
+  if (!str) return 0;
+  const s = str.replace(/,/g, '').trim();
+  const m = s.match(/^([\d.]+)\s*([KkMmBb])?/);
+  if (!m) return 0;
+  const num = parseFloat(m[1]);
+  const suffix = (m[2] || '').toUpperCase();
+  if (suffix === 'B') return num * 1e9;
+  if (suffix === 'M') return num * 1e6;
+  if (suffix === 'K') return num * 1e3;
+  return num;
 }
 
 function filterPodcasts() {
@@ -164,7 +177,7 @@ function filterPodcasts() {
     );
   }
 
-  // Filter famous episodes
+  // Filter famous episodes and sort by views descending
   let episodes = podcastsData.famousEpisodes;
   if (topic !== 'all') {
     episodes = episodes.filter(ep => ep.category === topic);
@@ -176,6 +189,7 @@ function filterPodcasts() {
       ep.tags?.some(t => t.toLowerCase().includes(q))
     );
   }
+  episodes = [...episodes].sort((a, b) => parseViewCount(b.views) - parseViewCount(a.views));
 
   renderPodcastsTab(channels, podcastVideosByChannel, episodes);
 }

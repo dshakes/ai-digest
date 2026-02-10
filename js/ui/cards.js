@@ -137,69 +137,64 @@ export function createResourceCard(resource) {
   return el;
 }
 
-export function createPodcasterSection(channel, videos) {
+export function createPodcasterGroup(channel, videos) {
   const el = document.createElement('div');
-  el.className = 'podcaster-section';
+  el.className = 'channel-group';
   el.dataset.category = channel.category;
 
-  const tags = (channel.tags || []).slice(0, 4);
+  const desc = channel.description.length > 120
+    ? channel.description.slice(0, 120) + '...'
+    : channel.description;
+
+  const recentVideos = videos.slice(0, 3);
 
   el.innerHTML = `
-    <div class="podcaster-section__header">
-      <div class="podcaster-section__info">
-        <span class="podcaster-section__category podcaster-section__category--${channel.category}">${escapeHTML(channel.category)}</span>
-        <h3 class="podcaster-section__title"><a href="${escapeAttr(channel.url)}" target="_blank" rel="noopener">${escapeHTML(channel.title)}</a></h3>
-        <span class="podcaster-section__host"><span class="material-icons-outlined">person</span>${escapeHTML(channel.host)}</span>
-        <span class="podcaster-section__subs"><span class="material-icons-outlined">group</span>${escapeHTML(channel.subscribers)}</span>
+    <div class="channel-group__info">
+      <div class="channel-group__name-row">
+        <span class="channel-group__category channel-group__category--${channel.category}">${escapeHTML(channel.category)}</span>
+        <h3 class="channel-group__name">${escapeHTML(channel.title)}</h3>
       </div>
-      <span class="podcaster-section__toggle material-icons-outlined">expand_more</span>
+      <span class="channel-group__host"><span class="material-icons-outlined">person</span>${escapeHTML(channel.host)}</span>
+      <span class="channel-group__subs"><span class="material-icons-outlined">group</span>${escapeHTML(channel.subscribers)}</span>
+      <p class="channel-group__desc">${escapeHTML(desc)}</p>
+      <a href="${escapeAttr(channel.url)}" target="_blank" rel="noopener" class="channel-group__link">View Channel <span class="material-icons-outlined">arrow_forward</span></a>
     </div>
-    <div class="podcaster-section__body">
-      <p class="podcaster-section__desc">${escapeHTML(channel.description)}</p>
-      ${tags.length ? `<div class="podcaster-section__tags">${tags.map(t => `<span class="podcaster-section__tag">${escapeHTML(t)}</span>`).join('')}</div>` : ''}
-      <div class="podcaster-section__videos">
-        ${videos.length ? videos.map(v => `
-          <a href="${escapeAttr(v.url)}" target="_blank" rel="noopener" class="video-thumb">
-            <div class="video-thumb__img-wrap">
-              <img src="${escapeAttr(v.thumbnail)}" alt="" loading="lazy">
-              <span class="video-thumb__play material-icons-outlined">play_circle_filled</span>
-            </div>
-            <span class="video-thumb__title">${escapeHTML(v.title)}</span>
-            <span class="video-thumb__date">${formatVideoDate(v.publishedAt)}</span>
-          </a>
-        `).join('') : '<span class="podcaster-section__no-videos">Could not load recent videos</span>'}
-      </div>
+    <div class="channel-group__videos">
+      ${recentVideos.length ? recentVideos.map(v => `
+        <a href="${escapeAttr(v.url)}" target="_blank" rel="noopener" class="channel-group__video">
+          <div class="channel-group__video-img">
+            <img src="${escapeAttr(v.thumbnail)}" alt="" loading="lazy">
+            <span class="channel-group__video-play material-icons-outlined">play_circle_filled</span>
+          </div>
+          <span class="channel-group__video-title">${escapeHTML(v.title)}</span>
+          <span class="channel-group__video-date">${formatVideoDate(v.publishedAt)}</span>
+        </a>
+      `).join('') : '<span class="channel-group__no-videos">Could not load recent videos</span>'}
     </div>
   `;
-
-  // Toggle expand/collapse
-  const header = el.querySelector('.podcaster-section__header');
-  header.addEventListener('click', () => {
-    el.classList.toggle('is-expanded');
-  });
 
   return el;
 }
 
-export function createFamousEpisodeCard(episode) {
+export function createPopularEpisodeCard(episode) {
   const el = document.createElement('a');
-  el.className = 'famous-episode';
+  el.className = 'popular-episode';
   el.href = `https://www.youtube.com/watch?v=${escapeAttr(episode.videoId)}`;
   el.target = '_blank';
   el.rel = 'noopener';
   el.dataset.category = episode.category;
 
   el.innerHTML = `
-    <div class="famous-episode__img-wrap">
+    <div class="popular-episode__img">
       <img src="${escapeAttr(episode.thumbnail)}" alt="" loading="lazy">
-      <span class="famous-episode__play material-icons-outlined">play_circle_filled</span>
-      <span class="famous-episode__duration">${escapeHTML(episode.duration)}</span>
+      <span class="popular-episode__play material-icons-outlined">play_circle_filled</span>
+      <span class="popular-episode__duration">${escapeHTML(episode.duration)}</span>
     </div>
-    <div class="famous-episode__details">
-      <h4 class="famous-episode__title">${escapeHTML(episode.title)}</h4>
-      <span class="famous-episode__channel">${escapeHTML(episode.channel)}</span>
-      <div class="famous-episode__meta">
-        <span><span class="material-icons-outlined">visibility</span>${escapeHTML(episode.views)}</span>
+    <div class="popular-episode__body">
+      <h4 class="popular-episode__title">${escapeHTML(episode.title)}</h4>
+      <span class="popular-episode__channel">${escapeHTML(episode.channel)}</span>
+      <div class="popular-episode__meta">
+        <span class="popular-episode__views"><span class="material-icons-outlined">visibility</span>${escapeHTML(episode.views)}</span>
         <span><span class="material-icons-outlined">schedule</span>${escapeHTML(episode.date)}</span>
       </div>
     </div>

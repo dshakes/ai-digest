@@ -242,242 +242,44 @@
   color: var(--md-primary-600);
 }
 
-.podcasts-section-heading--famous {
+.podcasts-section-heading__count {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--md-grey-500);
+}
+
+.podcasts-section-heading--channels {
   margin-top: 40px;
 }
 
-/* ===== Podcaster Section (collapsible) ===== */
-.podcaster-section {
-  background: var(--md-surface);
-  border-radius: var(--radius-md);
-  box-shadow: var(--elevation-1);
-  margin-bottom: 8px;
-  overflow: hidden;
-  transition: box-shadow 0.2s ease;
-}
-
-.podcaster-section:hover {
-  box-shadow: var(--elevation-2);
-}
-
-.podcaster-section__header {
+/* ===== Popular Episodes — Horizontal Scroll Row ===== */
+.popular-episodes {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 16px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.podcaster-section__info {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex: 1;
-  min-width: 0;
-  flex-wrap: wrap;
-}
-
-.podcaster-section__category {
-  font-size: 10px;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: var(--radius-full);
-  letter-spacing: 0.5px;
-  flex-shrink: 0;
-}
-
-.podcaster-section__category--interviews { background: #E3F2FD; color: #1565C0; }
-.podcaster-section__category--news { background: #FFF3E0; color: #E65100; }
-.podcaster-section__category--technical { background: #F3E5F5; color: #7B1FA2; }
-.podcaster-section__category--educational { background: #E8F5E9; color: var(--md-green-600); }
-
-.podcaster-section__title {
-  font-family: var(--font-display);
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--md-grey-900);
-  min-width: 0;
-}
-
-.podcaster-section__title a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.podcaster-section__title a:hover {
-  color: var(--md-primary-600);
-}
-
-.podcaster-section__host,
-.podcaster-section__subs {
-  font-size: 12px;
-  color: var(--md-grey-500);
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  flex-shrink: 0;
-}
-
-.podcaster-section__host .material-icons-outlined,
-.podcaster-section__subs .material-icons-outlined {
-  font-size: 14px;
-}
-
-.podcaster-section__toggle {
-  font-size: 22px;
-  color: var(--md-grey-400);
-  transition: transform 0.3s ease, color 0.2s ease;
-  flex-shrink: 0;
-}
-
-.podcaster-section.is-expanded .podcaster-section__toggle {
-  transform: rotate(180deg);
-  color: var(--md-grey-600);
-}
-
-/* Collapsible body */
-.podcaster-section__body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.35s ease, opacity 0.25s ease;
-  opacity: 0;
-  padding: 0 16px;
-}
-
-.podcaster-section.is-expanded .podcaster-section__body {
-  max-height: 500px;
-  opacity: 1;
-  padding: 0 16px 16px;
-}
-
-.podcaster-section__desc {
-  font-size: 13px;
-  color: var(--md-grey-700);
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-
-.podcaster-section__tags {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.podcaster-section__tag {
-  font-size: 11px;
-  color: var(--md-grey-700);
-  background: var(--md-grey-100);
-  padding: 2px 8px;
-  border-radius: var(--radius-full);
-}
-
-.podcaster-section__no-videos {
-  font-size: 12px;
-  color: var(--md-grey-400);
-  font-style: italic;
-}
-
-/* Horizontal scrolling video thumbnails */
-.podcaster-section__videos {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  scrollbar-width: thin;
-  padding-bottom: 4px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.podcaster-section__videos::-webkit-scrollbar {
-  height: 4px;
-}
-
-.podcaster-section__videos::-webkit-scrollbar-thumb {
-  background: var(--md-grey-300);
-  border-radius: 2px;
-}
-
-/* ===== Video Thumbnail Card ===== */
-.video-thumb {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  width: 200px;
-  min-width: 200px;
-  text-decoration: none;
-  color: var(--md-grey-900);
-  transition: transform 0.15s ease;
-}
-
-.video-thumb:hover {
-  transform: translateY(-2px);
-}
-
-.video-thumb__img-wrap {
-  position: relative;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  aspect-ratio: 16 / 9;
-  background: var(--md-grey-100);
-}
-
-.video-thumb__img-wrap img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.video-thumb__play {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 36px;
-  color: rgba(255, 255, 255, 0.9);
-  opacity: 0;
-  transition: opacity 0.2s ease;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
-
-.video-thumb:hover .video-thumb__play {
-  opacity: 1;
-}
-
-.video-thumb__title {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.4;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.video-thumb__date {
-  font-size: 11px;
-  color: var(--md-grey-500);
-}
-
-/* ===== Famous Episodes Grid ===== */
-.famous-episodes-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 0 16px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--md-grey-300) transparent;
 }
 
-@media (min-width: 1024px) {
-  .famous-episodes-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.popular-episodes::-webkit-scrollbar {
+  height: 6px;
 }
 
-/* ===== Famous Episode Card ===== */
-.famous-episode {
+.popular-episodes::-webkit-scrollbar-thumb {
+  background: var(--md-grey-300);
+  border-radius: 3px;
+}
+
+/* ===== Popular Episode Card ===== */
+.popular-episode {
   display: flex;
   flex-direction: column;
+  width: 280px;
+  min-width: 280px;
+  scroll-snap-align: start;
   background: var(--md-surface);
   border-radius: var(--radius-md);
   box-shadow: var(--elevation-1);
@@ -487,26 +289,26 @@
   transition: box-shadow 0.2s ease, transform 0.15s ease;
 }
 
-.famous-episode:hover {
+.popular-episode:hover {
   box-shadow: var(--elevation-2);
   transform: translateY(-2px);
 }
 
-.famous-episode__img-wrap {
+.popular-episode__img {
   position: relative;
   aspect-ratio: 16 / 9;
   background: var(--md-grey-100);
   overflow: hidden;
 }
 
-.famous-episode__img-wrap img {
+.popular-episode__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.famous-episode__play {
+.popular-episode__play {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -518,11 +320,11 @@
   text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
 }
 
-.famous-episode:hover .famous-episode__play {
+.popular-episode:hover .popular-episode__play {
   opacity: 1;
 }
 
-.famous-episode__duration {
+.popular-episode__duration {
   position: absolute;
   bottom: 6px;
   right: 6px;
@@ -534,7 +336,7 @@
   border-radius: 3px;
 }
 
-.famous-episode__details {
+.popular-episode__body {
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
@@ -542,7 +344,7 @@
   flex: 1;
 }
 
-.famous-episode__title {
+.popular-episode__title {
   font-family: var(--font-display);
   font-size: 14px;
   font-weight: 500;
@@ -553,12 +355,12 @@
   overflow: hidden;
 }
 
-.famous-episode__channel {
+.popular-episode__channel {
   font-size: 12px;
   color: var(--md-grey-600);
 }
 
-.famous-episode__meta {
+.popular-episode__meta {
   display: flex;
   gap: 12px;
   font-size: 11px;
@@ -566,59 +368,221 @@
   margin-top: auto;
 }
 
-.famous-episode__meta span {
+.popular-episode__meta span {
   display: flex;
   align-items: center;
   gap: 3px;
 }
 
-.famous-episode__meta .material-icons-outlined {
+.popular-episode__meta .material-icons-outlined {
   font-size: 13px;
+}
+
+.popular-episode__views {
+  font-weight: 600;
+  color: var(--md-grey-700);
+}
+
+/* ===== Channel Group (Podcaster Card) ===== */
+.channel-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  background: var(--md-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-1);
+  padding: 20px;
+  margin-bottom: 12px;
+  transition: box-shadow 0.2s ease;
+}
+
+.channel-group:hover {
+  box-shadow: var(--elevation-2);
+}
+
+.channel-group__info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.channel-group__name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.channel-group__category {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.channel-group__category--interviews { background: #E3F2FD; color: #1565C0; }
+.channel-group__category--news { background: #FFF3E0; color: #E65100; }
+.channel-group__category--technical { background: #F3E5F5; color: #7B1FA2; }
+.channel-group__category--educational { background: #E8F5E9; color: var(--md-green-600); }
+
+.channel-group__name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--md-grey-900);
+}
+
+.channel-group__host,
+.channel-group__subs {
+  font-size: 12px;
+  color: var(--md-grey-500);
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.channel-group__host .material-icons-outlined,
+.channel-group__subs .material-icons-outlined {
+  font-size: 14px;
+}
+
+.channel-group__desc {
+  font-size: 13px;
+  color: var(--md-grey-700);
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.channel-group__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--md-primary-600);
+  text-decoration: none;
+  margin-top: auto;
+  transition: color 0.15s ease;
+}
+
+.channel-group__link:hover {
+  color: var(--md-primary-800);
+}
+
+.channel-group__link .material-icons-outlined {
+  font-size: 16px;
+}
+
+/* Channel group videos (right column) */
+.channel-group__videos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  align-content: start;
+}
+
+.channel-group__video {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--md-grey-900);
+  transition: transform 0.15s ease;
+}
+
+.channel-group__video:hover {
+  transform: translateY(-2px);
+}
+
+.channel-group__video-img {
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--md-grey-100);
+}
+
+.channel-group__video-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.channel-group__video-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 28px;
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+}
+
+.channel-group__video:hover .channel-group__video-play {
+  opacity: 1;
+}
+
+.channel-group__video-title {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.channel-group__video-date {
+  font-size: 10px;
+  color: var(--md-grey-500);
+}
+
+.channel-group__no-videos {
+  font-size: 12px;
+  color: var(--md-grey-400);
+  font-style: italic;
+  grid-column: 1 / -1;
 }
 
 /* ===== Podcast Mobile Overrides ===== */
 @media (max-width: 600px) {
-  .podcaster-section__header {
-    padding: 12px;
-    gap: 8px;
+  .popular-episode {
+    width: 240px;
+    min-width: 240px;
   }
 
-  .podcaster-section__title {
-    font-size: 14px;
-  }
-
-  .podcaster-section__host {
-    display: none;
-  }
-
-  .podcaster-section__desc {
-    font-size: 12px;
-  }
-
-  .podcaster-section.is-expanded .podcaster-section__body {
-    padding: 0 12px 12px;
-  }
-
-  .video-thumb {
-    width: 160px;
-    min-width: 160px;
-  }
-
-  .video-thumb__title {
-    font-size: 11px;
-  }
-
-  .famous-episodes-grid {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
-
-  .famous-episode__title {
+  .popular-episode__title {
     font-size: 13px;
   }
 
-  .famous-episode__details {
+  .popular-episode__body {
     padding: 10px 12px;
+  }
+
+  .channel-group {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .channel-group__name {
+    font-size: 15px;
+  }
+
+  .channel-group__videos {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .podcasts-section-heading {
@@ -626,7 +590,7 @@
     margin: 16px 0 8px;
   }
 
-  .podcasts-section-heading--famous {
+  .podcasts-section-heading--channels {
     margin-top: 24px;
   }
 }

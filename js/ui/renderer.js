@@ -1,4 +1,4 @@
-import { createNewsCard, createPaperCard, createReleaseCard, createResourceCard, createPodcasterSection, createFamousEpisodeCard, timeAgo } from './cards.js';
+import { createNewsCard, createPaperCard, createReleaseCard, createResourceCard, createPodcasterGroup, createPopularEpisodeCard, timeAgo } from './cards.js';
 
 const PAGE_SIZE = 10;
 
@@ -84,41 +84,45 @@ export function renderPapers(items) {
 }
 
 export function renderPodcastsTab(channels, videosByChannel, famousEpisodes) {
-  // Render top podcasters
-  const topContainer = document.getElementById('podcastsTopSection');
-  if (topContainer) {
-    topContainer.innerHTML = '';
-    const frag = document.createDocumentFragment();
-    channels.forEach(ch => {
-      const videos = videosByChannel[ch.channelId] || [];
-      frag.appendChild(createPodcasterSection(ch, videos));
-    });
-    if (channels.length === 0) {
-      topContainer.innerHTML = `
-        <div class="empty-state">
-          <span class="material-icons-outlined">cloud_off</span>
-          <h3>No podcasters match your filters</h3>
-        </div>`;
-    } else {
-      topContainer.appendChild(frag);
-    }
-  }
-
-  // Render famous episodes
-  const famousContainer = document.getElementById('podcastsFamousGrid');
-  if (famousContainer) {
-    famousContainer.innerHTML = '';
-    const frag = document.createDocumentFragment();
-    famousEpisodes.forEach(ep => frag.appendChild(createFamousEpisodeCard(ep)));
+  // Render popular episodes (horizontal scroll, sorted by views)
+  const popularContainer = document.getElementById('podcastsPopularRow');
+  const popularCount = document.getElementById('popularEpisodesCount');
+  if (popularContainer) {
+    popularContainer.innerHTML = '';
     if (famousEpisodes.length === 0) {
-      famousContainer.innerHTML = `
+      popularContainer.innerHTML = `
         <div class="empty-state">
           <span class="material-icons-outlined">cloud_off</span>
           <h3>No episodes match your filters</h3>
         </div>`;
     } else {
-      famousContainer.appendChild(frag);
+      const frag = document.createDocumentFragment();
+      famousEpisodes.forEach(ep => frag.appendChild(createPopularEpisodeCard(ep)));
+      popularContainer.appendChild(frag);
     }
+    if (popularCount) popularCount.textContent = famousEpisodes.length ? `(${famousEpisodes.length})` : '';
+  }
+
+  // Render podcaster groups
+  const groupsContainer = document.getElementById('podcastsChannelGroups');
+  const podcastersCount = document.getElementById('podcastersCount');
+  if (groupsContainer) {
+    groupsContainer.innerHTML = '';
+    if (channels.length === 0) {
+      groupsContainer.innerHTML = `
+        <div class="empty-state">
+          <span class="material-icons-outlined">cloud_off</span>
+          <h3>No podcasters match your filters</h3>
+        </div>`;
+    } else {
+      const frag = document.createDocumentFragment();
+      channels.forEach(ch => {
+        const videos = videosByChannel[ch.channelId] || [];
+        frag.appendChild(createPodcasterGroup(ch, videos));
+      });
+      groupsContainer.appendChild(frag);
+    }
+    if (podcastersCount) podcastersCount.textContent = channels.length ? `(${channels.length})` : '';
   }
 }
 

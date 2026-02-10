@@ -118,7 +118,7 @@ export function renderPodcastsTab(channels, videosByChannel, famousEpisodes, epi
       const frag = document.createDocumentFragment();
       channels.forEach(ch => {
         const videos = videosByChannel[ch.channelId] || [];
-        const fallback = episodesByChannel[ch.title] || [];
+        const fallback = episodesByChannel[ch.title] || episodesByChannel[ch.host] || [];
         frag.appendChild(createPodcasterGroup(ch, videos, fallback));
       });
       groupsContainer.appendChild(frag);

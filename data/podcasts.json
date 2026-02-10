@@ -80,6 +80,26 @@
       "subscribers": "420K",
       "category": "interviews",
       "tags": ["ai", "agi", "research", "policy"]
+    },
+    {
+      "title": "DeepLearning.AI",
+      "host": "Andrew Ng",
+      "channelId": "UCcIXc5mJsHVYTZR1maL5l9w",
+      "url": "https://www.youtube.com/@Deeplearningai",
+      "description": "Educational content from Andrew Ng's team — short courses, event talks, and AI explainers for practitioners.",
+      "subscribers": "380K",
+      "category": "educational",
+      "tags": ["ml", "deep-learning", "courses", "tutorials"]
+    },
+    {
+      "title": "Moonshots with Peter Diamandis",
+      "host": "Peter Diamandis",
+      "channelId": "UCvxm0qTrGN_1LMYgUaftWyQ",
+      "url": "https://www.youtube.com/@PeterDiamandis",
+      "description": "Weekly conversations with top technologists, investors, and builders on exponential technologies, AI, longevity, and the future.",
+      "subscribers": "330K",
+      "category": "interviews",
+      "tags": ["ai", "exponential", "longevity", "future"]
     }
   ],
   "famousEpisodes": [

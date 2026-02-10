@@ -140,7 +140,7 @@ async function loadPodcasts() {
     podcastVideosByChannel = videosByChannel;
     filterPodcasts();
 
-    if (errorCount) showToast(`${errorCount} podcast feed(s) unavailable`, 'error');
+    // RSS errors are silent — famous episode fallbacks handle it gracefully
   } catch {
     showToast('Could not load podcasts', 'error');
   }
